@@ -11,7 +11,7 @@ const projectList = [
 	},
 ];
 
-const getProjectList = (options: { list?: boolean }) => {
+export const getProjectList = (options: { list?: boolean }) => {
 	if (options.list) {
 		logger.info('Listing all projects:');
 		console.table(projectList);
@@ -19,5 +19,3 @@ const getProjectList = (options: { list?: boolean }) => {
 		logger.info('Use the --list or -l option to see all projects.');
 	}
 };
-
-export default getProjectList;
