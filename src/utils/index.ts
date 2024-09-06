@@ -1,6 +1,5 @@
 import { API_URL } from '@/constants/envs';
 import { CreateEnvFile } from '@/types';
-import chalk from 'chalk';
 import fs from 'fs';
 import { logger } from './logger';
 

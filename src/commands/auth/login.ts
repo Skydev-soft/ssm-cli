@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const API_URL = 'https://api.dotenv.org';
 
-export const login = async () => {
+const login = async () => {
 	const spinner = ora('Initiating login process...').start();
 
 	try {
@@ -39,3 +39,5 @@ export const login = async () => {
 		logger.error('An error occurred during login:', error);
 	}
 };
+
+export default login;

@@ -1,2 +1,2 @@
-export * from './pull-env';
-export * from './push-env';
+export { default as pullEnv } from './pull-env';
+export { default as pushEnv } from './push-env';
