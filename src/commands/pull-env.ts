@@ -1,5 +1,7 @@
+import { logger } from '@/utils/logger';
+
 const pullEnv = () => {
-	console.log('Pull Env');
+	logger.info('Pull Env');
 };
 
 export default pullEnv;

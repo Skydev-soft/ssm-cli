@@ -1,3 +1,5 @@
+import { logger } from '@/utils/logger';
+
 const projectList = [
 	{
 		name: 'project1',
@@ -11,10 +13,10 @@ const projectList = [
 
 const getProjectList = (options: { list?: boolean }) => {
 	if (options.list) {
-		console.log('Listing all projects:');
+		logger.info('Listing all projects:');
 		console.table(projectList);
 	} else {
-		console.log('Use the --list or -l option to see all projects.');
+		logger.info('Use the --list or -l option to see all projects.');
 	}
 };
 

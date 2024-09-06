@@ -1,7 +1,8 @@
+import { API_URL } from '@/constants/envs';
+import { CreateEnvFile } from '@/types';
 import chalk from 'chalk';
 import fs from 'fs';
-import { API_URL } from '../constants/envs';
-import { CreateEnvFile } from '../types';
+import { logger } from './logger';
 
 export const createEnvFile = ({ data, fileName }: CreateEnvFile) => {
 	const content = Object.entries(data)
@@ -10,9 +11,9 @@ export const createEnvFile = ({ data, fileName }: CreateEnvFile) => {
 
 	fs.writeFile(fileName, content, (err) => {
 		if (err) {
-			console.log(chalk.red(`Error creating ${fileName} file:`, err));
+			logger.error(`Error creating ${fileName} file:`, err);
 		} else {
-			console.log(chalk.green(`${fileName} file created`));
+			logger.succeed(`${fileName} file created`);
 		}
 	});
 };

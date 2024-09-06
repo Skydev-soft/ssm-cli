@@ -1,5 +1,7 @@
+import { logger } from '@/utils/logger';
+
 const pushEnv = () => {
-	console.log('Push Env');
+	logger.info('Push Env');
 };
 
 export default pushEnv;

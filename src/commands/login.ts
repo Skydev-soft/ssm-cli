@@ -1,4 +1,5 @@
 import { createEnvFile } from '@/utils';
+import { logger } from '@/utils/logger';
 import chalk from 'chalk';
 import open from 'open';
 import ora from 'ora';
@@ -17,10 +18,10 @@ const login = async () => {
 		spinner.succeed('Login URL generated. Opening in your default browser...');
 		await open(loginUrl);
 
-		console.log(
+		logger.info(
 			chalk.yellow('Please complete the login process in your browser.'),
 		);
-		console.log(chalk.yellow('Waiting for login to complete...'));
+		logger.warn('Waiting for login to complete...');
 
 		const accessToken = 'aaaa';
 
@@ -31,11 +32,11 @@ const login = async () => {
 			fileName: '.env',
 		});
 
-		console.log(chalk.green('Successfully logged in!'));
-		console.log(chalk.green('DOTENV_TOKEN has been added to your .env file.'));
+		logger.succeed('Successfully logged in!');
+		logger.succeed('DOTENV_TOKEN has been added to your .env file.');
 	} catch (error) {
 		spinner.fail('Login process failed');
-		console.error(chalk.red('An error occurred during login:'), error);
+		logger.error('An error occurred during login:', error);
 	}
 };
 
