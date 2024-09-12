@@ -1,7 +1,16 @@
+import { addGitignoreRules, createEnvFile } from '@/utils';
 import { logger } from '@/utils/logger';
 
-const initProject = () => {
-	logger.info('Init Project');
+const initProject = (uuid: string) => {
+	createEnvFile({
+		data: {
+			PROJECT_UUID: uuid,
+		},
+		fileName: '.env.vault',
+	});
+
+	logger.info('Project initialized');
+	addGitignoreRules();
 };
 
 export default initProject;

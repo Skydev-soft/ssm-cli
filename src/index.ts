@@ -1,5 +1,11 @@
 #! /usr/bin/env node
-import { getProjectList, login, pullEnv, pushEnv } from '@/commands';
+import {
+	getProjectList,
+	initProject,
+	login,
+	pullEnv,
+	pushEnv,
+} from '@/commands';
 import { packageJSON } from '@/utils/package-json.js';
 import { renderTitle } from '@/utils/renderTitle.js';
 import { Command } from 'commander';
@@ -12,7 +18,7 @@ import { Command } from 'commander';
 	program
 		.version(packageJSON.version, '-v, --version', 'display the version number')
 		.description('An CLI for managing projects')
-		.name('ssm');
+		.name('ssm-cli');
 
 	program.command('login').description('Login to the SSM').action(login);
 
@@ -30,9 +36,14 @@ import { Command } from 'commander';
 		.command('project')
 		.description('Project related commands')
 		.option('-l, --list', 'List all projects')
-		.action(getProjectList);
+		.action(getProjectList)
+		.addCommand(
+			new Command()
+				.command('new')
+				.description('Initialize project')
+				.argument('<uuid>', 'Project uuid')
+				.action(initProject),
+		);
 
 	program.parse(process.argv);
-
-	program.opts();
 })();

@@ -38,3 +38,36 @@ export const pollForToken = async (
 	}
 	throw new Error('Login timed out. Please try again.');
 };
+
+export const addGitignoreRules = async (filePath = '.gitignore') => {
+	const newRules = `
+  # Env files
+  .env*
+  !.env.project
+  !.env.vault
+  `;
+
+	try {
+		let content = fs.readFileSync(filePath, 'utf8');
+
+		if (!content.includes('# Env files')) {
+			content += '\n' + newRules.trim() + '\n';
+			fs.writeFileSync(filePath, content);
+			logger.succeed(`${filePath} file updated with new rules`);
+		}
+	} catch (err) {
+		if (err.code === 'ENOENT') {
+			fs.writeFileSync(filePath, newRules.trim() + '\n');
+			logger.succeed(`${filePath} file created with new rules`);
+		} else {
+			logger.error(`Error updating ${filePath} file:`, err);
+		}
+	}
+};
+
+export const convertToCookieString = (
+	cookiesObj: Record<string, string>,
+): string =>
+	Object.entries(cookiesObj)
+		.map(([key, value]) => `${key}=${value}`)
+		.join('; ');
