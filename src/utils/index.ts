@@ -1,4 +1,4 @@
-import { API_URL } from '@/constants/envs';
+import authApi from '@/services/apis/auth';
 import { CreateEnvFile } from '@/types';
 import fs from 'fs';
 import { logger } from './logger';
@@ -18,21 +18,19 @@ export const createEnvFile = ({ data, fileName }: CreateEnvFile) => {
 };
 
 export const pollForToken = async (
-	loginId: string,
-	maxAttempts = 30,
+	sectionId: string,
+	maxAttempts = 300,
 	interval = 2000,
 ): Promise<string> => {
 	for (let i = 0; i < maxAttempts; i++) {
 		try {
-			const response = await fetch(`${API_URL}/login_status/${loginId}`);
-			if (response.ok) {
-				const data = (await response.json()) as { token: string };
-				if (data.token) {
-					return data.token;
-				}
-			}
+			const {
+				data: { accessToken },
+			} = await authApi.verify(sectionId);
+
+			return accessToken;
 		} catch (error) {
-			console.error('Error checking login status:', error);
+			//
 		}
 		await new Promise((resolve) => setTimeout(resolve, interval));
 	}
