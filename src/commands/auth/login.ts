@@ -7,7 +7,6 @@ import open from 'open';
 import ora from 'ora';
 
 const login = async () => {
-	console.log({ API_URL });
 	const spinner = ora('Initiating login process...').start();
 
 	try {
@@ -15,12 +14,15 @@ const login = async () => {
 		const sectionId = loginSession.data.id;
 		const loginUrl = `${WEBSITE_URL}/cli-sign-in?session-id=${sectionId}`;
 
+		logger.info(`\nLogin URL: ${loginUrl}`);
+
 		await open(loginUrl);
 		logger.succeed('Login URL generated. Opening in your default browser...');
-		logger.info(
+		spinner.succeed(
 			chalk.yellow('Please complete the login process in your browser.'),
 		);
-		logger.warn('Waiting for login to complete...');
+
+		const spinner2 = ora('Waiting for login to complete...').start();
 
 		const accessToken = await pollForToken(sectionId);
 
@@ -31,8 +33,8 @@ const login = async () => {
 			fileName: '.env.me',
 		});
 
-		logger.succeed('Successfully logged in!');
-		spinner.succeed('SSM_TOKEN has been added to your .env.me file.');
+		logger.succeed('\nSuccessfully logged in!');
+		spinner2.succeed('SSM_TOKEN has been added to your .env.me file.');
 	} catch (error) {
 		spinner.fail('Login process failed');
 		console.error('An error occurred during login:', error);
