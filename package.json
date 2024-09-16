@@ -1,6 +1,6 @@
 {
 	"name": "ssm-cli",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "SSM CLI",
 	"author": "TriThuc2321 <trithuc23232@gmail.com>",
 	"type": "module",
@@ -40,7 +40,6 @@
 		"figlet": "^1.5.2",
 		"open": "^10.1.0",
 		"ora": "^6.1.2",
-		"ssm-cli": "^1.0.1",
 		"uuid": "^10.0.0"
 	},
 	"devDependencies": {

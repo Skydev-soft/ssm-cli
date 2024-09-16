@@ -2,5 +2,5 @@ import { config } from 'dotenv';
 
 config();
 
-export const WEBSITE_URL = process.env.WEBSITE_URL;
-export const API_URL = process.env.API_URL;
+export const WEBSITE_URL = 'https://web-ssm.skydev.vn';
+export const API_URL = 'https://api-ssm.skydev.vn';
