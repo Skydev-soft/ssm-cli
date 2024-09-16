@@ -1,11 +1,25 @@
 {
-	"name": "ssm-cli",
+	"name": "@skydev/ssm-cli",
 	"version": "1.0.0",
 	"description": "SSM CLI",
+	"author": "TriThuc2321 <trithuc23232@gmail.com>",
 	"type": "module",
-	"bin": "./dist/index.js",
+	"keywords": [
+		"cli",
+		"npmtool"
+	],
+	"repository": "https://gitlab.com/vnd4992/secret-management-cli",
+	"homepage": "https://gitlab.com/vnd4992/secret-management-cli#readme",
+	"license": "ISC",
+	"bin": {
+		"ssm-cli": "./dist/index.js"
+	},
+	"main": "dist/index.js",
 	"engines": {
 		"node": ">=14.16"
+	},
+	"publishConfig": {
+		"@skydev:registry": "https://gitlab.com/api/v4/projects/61460241/packages/npm/"
 	},
 	"files": [
 		"dist"
