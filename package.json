@@ -1,5 +1,5 @@
 {
-	"name": "@skydev/ssm-cli",
+	"name": "ssm-cli",
 	"version": "1.0.0",
 	"description": "SSM CLI",
 	"author": "TriThuc2321 <trithuc23232@gmail.com>",
@@ -19,7 +19,7 @@
 		"node": ">=14.16"
 	},
 	"publishConfig": {
-		"@skydev:registry": "https://gitlab.com/api/v4/projects/61460241/packages/npm/"
+		"registry": "https://gitlab.com/api/v4/projects/61460241/packages/npm/"
 	},
 	"files": [
 		"dist"
