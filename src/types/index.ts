@@ -4,3 +4,8 @@ export type CreateEnvFile = {
 	};
 	fileName: string;
 };
+
+export interface IMessage {
+	message: string;
+	statusCode: number;
+}
