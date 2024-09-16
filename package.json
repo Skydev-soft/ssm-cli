@@ -40,6 +40,7 @@
 		"figlet": "^1.5.2",
 		"open": "^10.1.0",
 		"ora": "^6.1.2",
+		"ssm-cli": "^1.0.1",
 		"uuid": "^10.0.0"
 	},
 	"devDependencies": {
