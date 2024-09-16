@@ -8,8 +8,8 @@
 		"cli",
 		"npmtool"
 	],
-	"repository": "https://gitlab.com/vnd4992/secret-management-cli",
-	"homepage": "https://gitlab.com/vnd4992/secret-management-cli#readme",
+	"repository": "https://github.com/Skydev-soft/ssm-cli",
+	"homepage": "https://github.com/Skydev-soft/ssm-cli#readme",
 	"license": "ISC",
 	"bin": {
 		"ssm-cli": "./dist/index.js"
