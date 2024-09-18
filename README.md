@@ -9,8 +9,6 @@ Skydev Secret Management CLI (ssm-cli) is a command-line interface tool for mana
 - [Commands](#commands)
 - [Authors](#authors)
 
-<a name="installation"></a>
-
 ## Installation
 
 You can install the CLI globally using npm:
