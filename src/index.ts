@@ -12,7 +12,7 @@ import { Command } from 'commander';
 	program
 		.version(packageJSON.version, '-v, --version', 'display the version number')
 		.description('An CLI for managing projects')
-		.name('ssm');
+		.name('ssm-cli');
 
 	program.command('login').description('Login to the SSM').action(login);
 
