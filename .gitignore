@@ -33,3 +33,7 @@ devcontainer.env
 .flaskenv*
 !.env.project
 !.env.vault
+# Env files
+  .env*
+  !.env.project
+  !.env.vault

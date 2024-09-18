@@ -1,6 +1,6 @@
 {
 	"name": "ssm-cli",
-	"version": "1.0.0",
+	"version": "1.0.4",
 	"description": "SSM CLI",
 	"author": "TriThuc2321 <trithuc23232@gmail.com>",
 	"type": "module",
@@ -8,18 +8,18 @@
 		"cli",
 		"npmtool"
 	],
-	"repository": "https://github.com/Skydev-soft/ssm-cli",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Skydev-soft/ssm-cli.git"
+	},
 	"homepage": "https://github.com/Skydev-soft/ssm-cli#readme",
 	"license": "ISC",
 	"bin": {
-		"ssm-cli": "./dist/index.js"
+		"ssm-cli": "dist/index.js"
 	},
 	"main": "dist/index.js",
 	"engines": {
 		"node": ">=14.16"
-	},
-	"publishConfig": {
-		"registry": "https://gitlab.com/api/v4/projects/61460241/packages/npm/"
 	},
 	"files": [
 		"dist"
