@@ -69,3 +69,4 @@ ssm-cli push [option]
 
 - [@TriThuc2321](https://github.com/TriThuc2321)
 - [@nxquan](https://github.com/nxquan)
+- [@ntlong1801](https://github.com/ntlong1801)
