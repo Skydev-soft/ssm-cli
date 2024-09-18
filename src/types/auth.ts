@@ -1,4 +1,4 @@
-import { IMessage } from '.';
+import { IMessage } from './common';
 
 export interface ICreateCLILoginSessionResponse extends IMessage {
 	data: {
