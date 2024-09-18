@@ -1,5 +1,6 @@
+import { ACCESS_TOKEN_KEY } from '@/constants/common';
 import authApi from '@/services/apis/auth';
-import { CreateEnvFile } from '@/types';
+import { CreateEnvFile } from '@/types/common';
 import fs from 'fs';
 import { logger } from './logger';
 
@@ -15,6 +16,20 @@ export const createEnvFile = ({ data, fileName }: CreateEnvFile) => {
 			logger.succeed(`${fileName} file created`);
 		}
 	});
+};
+
+export const getAccessTokenFromFile = (filePath = '.env.me'): string => {
+	try {
+		const content = fs.readFileSync(filePath, 'utf8');
+
+		const accessTokenLine = content
+			.split('\n')
+			.find((line) => line.startsWith(ACCESS_TOKEN_KEY));
+		return accessTokenLine?.split('=')[1] || '';
+	} catch (err) {
+		console.error(err);
+		return '';
+	}
 };
 
 export const pollForToken = async (

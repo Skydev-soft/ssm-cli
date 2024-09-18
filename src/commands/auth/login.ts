@@ -1,6 +1,7 @@
-import { API_URL, WEBSITE_URL } from '@/constants/envs';
+import { ACCESS_TOKEN_KEY } from '@/constants/common';
+import { WEBSITE_URL } from '@/constants/envs';
 import authApi from '@/services/apis/auth';
-import { createEnvFile, pollForToken } from '@/utils';
+import { addGitignoreRules, createEnvFile, pollForToken } from '@/utils';
 import { logger } from '@/utils/logger';
 import chalk from 'chalk';
 import open from 'open';
@@ -28,13 +29,14 @@ const login = async () => {
 
 		createEnvFile({
 			data: {
-				DOTENV_TOKEN: accessToken,
+				[ACCESS_TOKEN_KEY]: accessToken,
 			},
 			fileName: '.env.me',
 		});
 
 		logger.succeed('\nSuccessfully logged in!');
 		spinner2.succeed('SSM_TOKEN has been added to your .env.me file.');
+		addGitignoreRules();
 	} catch (error) {
 		spinner.fail('Login process failed');
 		console.error('An error occurred during login:', error);

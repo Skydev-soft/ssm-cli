@@ -1,11 +1,5 @@
 #! /usr/bin/env node
-import {
-	getProjectList,
-	initProject,
-	login,
-	pullEnv,
-	pushEnv,
-} from '@/commands';
+import { initRepo, login, pullEnv, pushEnv } from '@/commands';
 import { packageJSON } from '@/utils/package-json.js';
 import { renderTitle } from '@/utils/renderTitle.js';
 import { Command } from 'commander';
@@ -33,16 +27,14 @@ import { Command } from 'commander';
 		);
 
 	program
-		.command('project')
-		.description('Project related commands')
-		.option('-l, --list', 'List all projects')
-		.action(getProjectList)
+		.command('repo')
+		.description('Repository related commands')
 		.addCommand(
 			new Command()
-				.command('new')
-				.description('Initialize project')
-				.argument('<uuid>', 'Project uuid')
-				.action(initProject),
+				.command('init')
+				.description('Initialize repository')
+				.argument('<pathname>', 'Repository pathname')
+				.action(initRepo),
 		);
 
 	program.parse(process.argv);
