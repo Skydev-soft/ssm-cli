@@ -1,6 +1,6 @@
 {
 	"name": "ssm-cli",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "SSM CLI",
 	"author": "TriThuc2321 <trithuc23232@gmail.com>",
 	"type": "module",
