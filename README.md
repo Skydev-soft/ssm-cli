@@ -1,4 +1,4 @@
-# SSM
+# Skydev Secret Management
 
 Skydev Secret Management CLI (ssm-cli) is a command-line interface tool for managing project environments and secrets.
 
@@ -7,6 +7,7 @@ Skydev Secret Management CLI (ssm-cli) is a command-line interface tool for mana
 - [Installation](#installation)
 - [Usage](#usage)
 - [Commands](#commands)
+- [Authors](#authors)
 
 <a name="installation"></a>
 
@@ -65,3 +66,8 @@ ssm-cli push [option]
 - `-p, --production` Push env Production
 - `-s, --stagding` Push env Stagding
 - `-c, --cicd` Push env CICD
+
+## Authors
+
+- [@TriThuc2321](https://github.com/TriThuc2321)
+- [@nxquan](https://github.com/nxquan)
