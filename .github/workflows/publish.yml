@@ -3,7 +3,7 @@ name: 'Publish package to npm'
 on:
   push:
     branches:
-      - main # Chỉ chạy khi có push lên nhánh main (có thể thay đổi nhánh tùy nhu cầu)
+      - main
 
 jobs:
   publish:
@@ -28,6 +28,13 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Create envfile
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_WEBSITE_URL: ${{ variables.WEBSITE_URL }}
+          envkey_API_URL: ${{ variables.API_URL }}
+          file_name: .env
 
       - name: Build app
         run: npm run build
