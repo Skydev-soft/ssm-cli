@@ -5,9 +5,14 @@ import fs from 'fs';
 import { logger } from './logger';
 
 export const createEnvFile = ({ data, fileName }: CreateEnvFile) => {
-	const content = Object.entries(data)
-		.map(([key, value]) => `${key}=${value}`)
-		.join('\n');
+	let content;
+	if (typeof data === 'string') {
+		content = data;
+	} else {
+		content = Object.entries(data)
+			.map(([key, value]) => `${key}=${value}`)
+			.join('\n');
+	}
 
 	fs.writeFile(fileName, content, (err) => {
 		if (err) {
@@ -27,8 +32,35 @@ export const getAccessTokenFromFile = (filePath = '.env.me'): string => {
 			.find((line) => line.startsWith(ACCESS_TOKEN_KEY));
 		return accessTokenLine?.split('=')[1] || '';
 	} catch (err) {
-		console.error(err);
 		return '';
+	}
+};
+
+export const getEnvFromFile = (filePath = '.env'): string => {
+	try {
+		const content = fs.readFileSync(filePath, 'utf8');
+
+		return content;
+	} catch (err) {
+		logger.warn('No .env file found.');
+		return '';
+	}
+};
+
+export const getRepoInfoFromFile = (filePath = '.env.vault') => {
+	try {
+		const content = fs.readFileSync(filePath, 'utf8');
+
+		const repoInfo: Record<string, string> = {};
+		content.split('\n').forEach((line) => {
+			const [key, value] = line.split('=');
+			repoInfo[key] = value;
+		});
+
+		return repoInfo;
+	} catch (err) {
+		logger.warn('No repository found. Please run `ssm-cli repo init` first');
+		return null;
 	}
 };
 

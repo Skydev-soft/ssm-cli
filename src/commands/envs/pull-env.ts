@@ -1,19 +1,27 @@
-import { IMessage } from '@/types/common';
+import { REPO_PATHNAME_KEY } from '@/constants/common';
+import envApi from '@/services/apis/env';
+import { EnvironmentEnum, IMessage } from '@/types/common';
+import { createEnvFile, getRepoInfoFromFile } from '@/utils';
 import { logger } from '@/utils/logger';
 
 const pullEnv = async () => {
 	try {
-		// const detailRepo = await repoApi.getRepo(pathname);
+		const repoInfo = getRepoInfoFromFile();
+		if (!repoInfo) return;
 
-		// createEnvFile({
-		// 	data: {
-		// 		[REPO_PATHNAME_KEY]: pathname,
-		// 		[REPO_LINK_KEY]: detailRepo.data.httpUrlToRepo,
-		// 	},
-		// 	fileName: '.env.vault',
-		// });
+		const env = await envApi.getLatestEnv({
+			environment: EnvironmentEnum.DEVELOPMENT,
+			pathWithNamespace: repoInfo[REPO_PATHNAME_KEY],
+		});
 
-		logger.info('Env initialized');
+		if (env) {
+			createEnvFile({
+				data: env,
+				fileName: '.env',
+			});
+
+			logger.info('Env initialized');
+		}
 	} catch (error) {
 		const errorData = error as IMessage;
 		logger.error(errorData.message);

@@ -1,7 +1,9 @@
 export type CreateEnvFile = {
-	data: {
-		[key: string]: string;
-	};
+	data:
+		| {
+				[key: string]: string;
+		  }
+		| string;
 	fileName: string;
 };
 
@@ -17,4 +19,11 @@ export interface ITimestamp {
 	updatedById: string | null;
 	deletedAt: string | null;
 	deletedById: string | null;
+}
+
+export enum EnvironmentEnum {
+	DEVELOPMENT = 'Development',
+	STAGING = 'Staging',
+	PRODUCTION = 'Production',
+	CI_CD = 'CI/CD',
 }

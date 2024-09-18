@@ -39,7 +39,7 @@ export async function encryptDataWithAES(plaintext: string) {
 	const encryptedData = await crypto.subtle.encrypt(
 		{ name: 'AES-CBC', iv },
 		key,
-		new TextEncoder().encode(`\n${plaintext}\n`),
+		new TextEncoder().encode(plaintext),
 	);
 
 	return {

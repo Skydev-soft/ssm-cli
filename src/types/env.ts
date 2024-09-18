@@ -8,7 +8,7 @@ export interface IEnvResponse extends IMessage {
 export interface IKeyValue {
 	id: string;
 	projectId: string;
-	repositoryId: string;
+	pathWithNamespace: string;
 	version: string;
 	privateKey: string;
 	aesKey: string;
@@ -26,13 +26,14 @@ export interface IEnv extends IRepo {
 }
 
 export interface IGetLatestEnvParams {
-	repositoryId: string;
+	pathWithNamespace: string;
 	environment: string;
 }
 
 export interface ICreateEnv {
 	repositoryId: string;
 	environment: string;
+	env: string;
 }
 
 export interface ICreateEnvResponse extends IMessage {
