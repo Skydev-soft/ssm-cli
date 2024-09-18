@@ -30,11 +30,9 @@ jobs:
         run: npm install
 
       - name: Create envfile
-        uses: SpicyPizza/create-envfile@v1
-        with:
-          envkey_WEBSITE_URL: ${{ secrets.WEBSITE_URL }}
-          envkey_API_URL: ${{ secrets.API_URL }}
-          file_name: .env
+        run: |
+          echo "WEBSITE_URL=${{ secrets.WEBSITE_URL }}" >> .env
+          echo "API_URL=${{ secrets.API_URL }}" >> .env
 
       - name: Build app
         run: npm run build
