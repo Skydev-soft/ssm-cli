@@ -1,6 +1,7 @@
 import { ACCESS_TOKEN_KEY } from '@/constants/common';
 import authApi from '@/services/apis/auth';
-import { CreateEnvFile } from '@/types/common';
+import { CreateEnvFile, EnvironmentEnum } from '@/types/common';
+import { PullPushEnvOptionProps } from '@/types/env';
 import fs from 'fs';
 import { logger } from './logger';
 
@@ -42,7 +43,7 @@ export const getEnvFromFile = (filePath = '.env'): string => {
 
 		return content;
 	} catch (err) {
-		logger.warn('No .env file found.');
+		logger.warn(`No ${filePath} file found.`);
 		return '';
 	}
 };
@@ -59,7 +60,7 @@ export const getRepoInfoFromFile = (filePath = '.env.vault') => {
 
 		return repoInfo;
 	} catch (err) {
-		logger.warn('No repository found. Please run `ssm repo init` first');
+		logger.warn('No repository found. Please run `ssm-cli repo init` first');
 		return null;
 	}
 };
@@ -86,10 +87,10 @@ export const pollForToken = async (
 
 export const addGitignoreRules = async (filePath = '.gitignore') => {
 	const newRules = `
-  # Env files
-  .env*
-  !.env.project
-  !.env.vault
+# Env files
+.env*
+!.env.project
+!.env.vault
   `;
 
 	try {
@@ -116,3 +117,39 @@ export const convertToCookieString = (
 	Object.entries(cookiesObj)
 		.map(([key, value]) => `${key}=${value}`)
 		.join('; ');
+
+export const getEnvInfoFromOptions = ({
+	production,
+	develop,
+	cicd,
+	staging,
+}: PullPushEnvOptionProps) => {
+	if (production)
+		return {
+			environment: EnvironmentEnum.PRODUCTION,
+			fileName: '.env.production',
+		};
+
+	if (develop)
+		return {
+			environment: EnvironmentEnum.DEVELOPMENT,
+			fileName: '.env',
+		};
+
+	if (cicd)
+		return {
+			environment: EnvironmentEnum.CI_CD,
+			fileName: '.env.cicd',
+		};
+
+	if (staging)
+		return {
+			environment: EnvironmentEnum.STAGING,
+			fileName: '.env.staging',
+		};
+
+	return {
+		environment: EnvironmentEnum.DEVELOPMENT,
+		fileName: '.env',
+	};
+};

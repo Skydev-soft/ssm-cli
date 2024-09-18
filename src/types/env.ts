@@ -48,3 +48,10 @@ export interface IUpdateEnv {
 	aesKey: string;
 	commitMessage: string;
 }
+
+export type PullPushEnvOptionProps = {
+	production?: boolean;
+	develop?: boolean;
+	staging?: boolean;
+	cicd?: boolean;
+};

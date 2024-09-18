@@ -22,18 +22,8 @@ my-awesome-project
 coverage
 *.lcov
 
-# ENV files
-devcontainer.env
-.env
 
-# Mac
-.DS_Store
-
+# Env files
 .env*
-.flaskenv*
 !.env.project
 !.env.vault
-# Env files
-  .env*
-  !.env.project
-  !.env.vault
