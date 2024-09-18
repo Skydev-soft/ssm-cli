@@ -32,8 +32,8 @@ jobs:
       - name: Create envfile
         uses: SpicyPizza/create-envfile@v1
         with:
-          envkey_WEBSITE_URL: ${{ variables.WEBSITE_URL }}
-          envkey_API_URL: ${{ variables.API_URL }}
+          envkey_WEBSITE_URL: ${{ secrets.WEBSITE_URL }}
+          envkey_API_URL: ${{ secrets.API_URL }}
           file_name: .env
 
       - name: Build app
