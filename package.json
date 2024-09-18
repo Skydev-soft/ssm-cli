@@ -1,7 +1,7 @@
 {
-	"name": "ssm-cli",
-	"version": "1.0.10",
-	"description": "SSM CLI",
+	"name": "cli",
+	"version": "1.0.0",
+	"description": "Skydev serect management CLI",
 	"author": "TriThuc2321 <trithuc23232@gmail.com>",
 	"type": "module",
 	"keywords": [
@@ -15,7 +15,7 @@
 	"homepage": "https://github.com/Skydev-soft/ssm-cli#readme",
 	"license": "ISC",
 	"bin": {
-		"ssm-cli": "dist/index.js"
+		"ssm": "dist/index.js"
 	},
 	"main": "dist/index.js",
 	"engines": {

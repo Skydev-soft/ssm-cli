@@ -59,7 +59,7 @@ export const getRepoInfoFromFile = (filePath = '.env.vault') => {
 
 		return repoInfo;
 	} catch (err) {
-		logger.warn('No repository found. Please run `ssm-cli repo init` first');
+		logger.warn('No repository found. Please run `ssm repo init` first');
 		return null;
 	}
 };
