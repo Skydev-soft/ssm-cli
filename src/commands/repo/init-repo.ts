@@ -5,11 +5,25 @@ import {
 } from '@/constants/common';
 import repoApi from '@/services/apis/repo';
 import { IMessage } from '@/types/common';
+import { IRepoInitProps } from '@/types/repo';
 import { createEnvFile } from '@/utils';
+import { getGitOrigin } from '@/utils/git';
 import { logger } from '@/utils/logger';
+import syncRepo from './sync-repo';
 
-const initRepo = async (pathname: string) => {
+const initRepo = async (pathname: string, props: IRepoInitProps) => {
+	const { sync } = props;
+
 	try {
+		if (sync) {
+			await syncRepo();
+		}
+
+		if (!pathname) {
+			const { namespace, path } = getGitOrigin();
+			pathname = `${namespace}-${path}`;
+		}
+
 		const {
 			data: { httpUrlToRepo, id },
 		} = await repoApi.getRepo(pathname);
@@ -29,6 +43,10 @@ const initRepo = async (pathname: string) => {
 		logger.error(errorData.message);
 		if (errorData.statusCode === 401) {
 			logger.warn('You do not have permission, please login first');
+		} else {
+			logger.warn(
+				'Note: Please check if you have synchronized the repository: ssm-cli sync',
+			);
 		}
 	}
 };
