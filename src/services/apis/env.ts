@@ -16,7 +16,7 @@ import axiosInstance from './axios-instance';
 const envApi = {
 	getLatestEnv: async (params: IGetLatestEnvParams): Promise<string | null> => {
 		const { publicKey, privateKey } = await generateRSAKeyPair();
-
+		console.log({ publicKey });
 		const response = await axiosInstance.get('key-values/latest', {
 			params: { ...params, publicKey },
 		});
