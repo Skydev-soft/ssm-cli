@@ -18,3 +18,7 @@ export interface IRepo {
 export interface IRepoResponse extends IMessage {
 	data: IRepo;
 }
+
+export interface IRepoInitProps {
+	sync?: boolean;
+}

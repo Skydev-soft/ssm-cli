@@ -1,5 +1,5 @@
 #! /usr/bin/env node
-import { initRepo, login, pullEnv, pushEnv } from '@/commands';
+import { initRepo, login, pullEnv, pushEnv, syncRepo } from '@/commands';
 import { packageJSON } from '@/utils/package-json.js';
 import { renderTitle } from '@/utils/renderTitle.js';
 import { Command } from 'commander';
@@ -15,6 +15,13 @@ import { Command } from 'commander';
 		.name('ssm-cli');
 
 	program.command('login').description('Login to the SSM').action(login);
+
+	program
+		.command('sync')
+		.description(
+			'Synchronize the current repository (GIT) from Gitlab to SSM Registry',
+		)
+		.action(syncRepo);
 
 	program
 		.command('pull')
@@ -37,7 +44,12 @@ import { Command } from 'commander';
 	program
 		.command('init')
 		.description('Initialize repository')
-		.argument('<pathname>', 'Repository pathname')
-		.action(initRepo),
-		program.parse(process.argv);
+		.argument('[pathname]', 'Repository pathname')
+		.option(
+			'--sync',
+			'Synchronize the current repository (GIT) from Gitlab to SSM Registry',
+		)
+		.action(initRepo);
+
+	program.parse(process.argv);
 })();
