@@ -44,7 +44,12 @@ import { Command } from 'commander';
 	program
 		.command('init')
 		.description('Initialize repository')
-		.argument('<pathname>', 'Repository pathname')
-		.action(initRepo),
-		program.parse(process.argv);
+		.argument('[pathname]', 'Repository pathname')
+		.option(
+			'--sync',
+			'Synchronize the current repository (GIT) from Gitlab to SSM Registry',
+		)
+		.action(initRepo);
+
+	program.parse(process.argv);
 })();
