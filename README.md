@@ -113,27 +113,11 @@ ssm-cli push [option]
 
 ## Contributors
 
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/TriThuc2321">
-        <img src="https://github.com/TriThuc2321.png" width="50px;" style="border-radius: 50%;" alt="TriThuc2321"/>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/nxquan">
-        <img src="https://github.com/nxquan.png" width="50px;" style="border-radius: 50%;" alt="nxquan"/>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/PhamDat328">
-        <img src="https://github.com/PhamDat328.png" width="50px;" style="border-radius: 50%;" alt="TriThuc2321"/>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/ntlong1801">
-        <img src="https://github.com/ntlong1801.png" width="50px;" style="border-radius: 50%;" alt="TriThuc2321"/>
-      </a>
-    </td>
-  </tr>
-</table>
+<p>
+    <tr>
+      <td align="center" valign="top" width="0.33%"><a href="https://github.com/TriThuc2321"><img src="https://images.weserv.nl/?url=https://avatars.githubusercontent.com/u/71278156?v=4&h=50&w=50&fit=cover&mask=circle&maxage=7d" alt="TriThuc2321"/></td>
+      <td align="center" valign="top" width="0.33%"><a href="https://github.com/nxquan"><img src="https://images.weserv.nl/?url=https://avatars.githubusercontent.com/u/99462521?v=4&h=50&w=50&fit=cover&mask=circle&maxage=8d" alt="nxquan"/></td>
+      <td align="center" valign="top" width="0.33%"><a href="https://github.com/ntlong1801"><img src="https://images.weserv.nl/?url=https://avatars.githubusercontent.com/u/101699049?v=4&h=50&w=50&fit=cover&mask=circle&maxage=7d" alt="nxquan"/></td>
+      <td align="center" valign="top" width="0.33%"><a href="https://github.com/PhamDat328"><img src="https://images.weserv.nl/?url=https://avatars.githubusercontent.com/u/92577783?v=4&h=50&w=50&fit=cover&mask=circle&maxage=7d" alt="nxquan"/></td>
+    </tr>
+</p>
