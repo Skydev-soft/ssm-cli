@@ -55,7 +55,7 @@ ssm-cli init
 # Short command: ssm-cli init --sync
 
 # Push environment variables (default is develop)
-ssm-cli push
+ssm-cli push -m "commit message"
 
 # Pull environment variables (default is develop)
 ssm-cli pull
@@ -103,7 +103,7 @@ ssm-cli pull [option]
 Push environment variables.
 
 ```sh
-ssm-cli push [option]
+ssm-cli push -m "commit message" [option]
 ```
 
 - `-d, --develop` Push env Develop (default)
