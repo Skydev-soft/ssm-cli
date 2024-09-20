@@ -1,6 +1,6 @@
 {
 	"name": "ssm-cli",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "Skydev serect management CLI",
 	"author": "TriThuc2321 <trithuc23232@gmail.com>",
 	"type": "module",
