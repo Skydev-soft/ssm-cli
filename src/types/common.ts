@@ -7,6 +7,11 @@ export type CreateEnvFile = {
 	fileName: string;
 };
 
+export interface IUpdateLocalEnvVersion {
+	version: string;
+	fileName?: string;
+}
+
 export interface IMessage {
 	message: string;
 	statusCode: number;

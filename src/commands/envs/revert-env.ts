@@ -1,7 +1,5 @@
-import { REPO_PATHNAME_KEY } from '@/constants/common';
 import envApi from '@/services/apis/env';
 import { IMessage } from '@/types/common';
-import { PullPushEnvOptionProps } from '@/types/env';
 import {
 	createEnvFile,
 	getEnvInfoFromOptions,
@@ -10,31 +8,33 @@ import {
 } from '@/utils';
 import { logger } from '@/utils/logger';
 
-const pullEnv = async (props: PullPushEnvOptionProps) => {
+const revertEnv = async (version: string) => {
 	try {
-		const { environment, fileName } = getEnvInfoFromOptions(props);
+		const { environment, fileName } = getEnvInfoFromOptions({ develop: true });
 		const repoInfo = getRepoInfoFromFile();
+
 		if (!repoInfo) return;
 
-		const { decryptedData, version } = await envApi.getLatestEnv({
+		const env = await envApi.getEnvByIdOrVersion({
 			environment,
-			pathWithNamespace: repoInfo[REPO_PATHNAME_KEY],
+			idOrVersion: version,
 		});
 
-		if (decryptedData) {
+		if (env) {
 			createEnvFile({
-				data: decryptedData,
+				data: env,
 				fileName,
 			});
 
 			updateLocalEnvVersion({ version });
 
-			logger.info('Env initialized');
+			logger.info('Revert env successfully');
 		}
 	} catch (error) {
 		const errorData = error as IMessage;
+
 		logger.error(errorData.message);
 	}
 };
 
-export default pullEnv;
+export default revertEnv;
