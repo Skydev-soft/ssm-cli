@@ -10,6 +10,8 @@ import {
 import { logger } from '@/utils/logger';
 
 const pushEnv = async (props: PullPushEnvOptionProps) => {
+	const { message: commitMessage } = props;
+
 	try {
 		const { environment, fileName } = getEnvInfoFromOptions(props);
 
@@ -24,6 +26,7 @@ const pushEnv = async (props: PullPushEnvOptionProps) => {
 			environment,
 			repositoryId: repoInfo[REPO_ID_KEY],
 			env,
+			commitMessage,
 		});
 
 		logger.info(`Push env ${environment} successfully`);

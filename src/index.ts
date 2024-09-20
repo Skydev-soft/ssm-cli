@@ -1,5 +1,14 @@
 #! /usr/bin/env node
-import { initRepo, login, pullEnv, pushEnv, syncRepo } from '@/commands';
+import {
+	getCurrentVersion,
+	getLogs,
+	initRepo,
+	login,
+	pullEnv,
+	pushEnv,
+	revertEnv,
+	syncRepo,
+} from '@/commands';
 import { packageJSON } from '@/utils/package-json.js';
 import { renderTitle } from '@/utils/renderTitle.js';
 import { Command } from 'commander';
@@ -35,6 +44,7 @@ import { Command } from 'commander';
 	program
 		.command('push')
 		.description('Push Env')
+		.requiredOption('-m, --message <message>', 'Commit message')
 		.option('-d, --develop', 'Push env develop (default)')
 		.option('-p, --production', 'Push env production')
 		.option('-s, --staging', 'Push env staging')
@@ -50,6 +60,23 @@ import { Command } from 'commander';
 			'Synchronize the current repository (GIT) from Gitlab to SSM Registry',
 		)
 		.action(initRepo);
+
+	program
+		.command('log')
+		.option('--oneline', 'Get brief logs')
+		.description('Get logs')
+		.action(getLogs);
+
+	program
+		.command('revert')
+		.argument('<version>', 'Version of the env')
+		.description('Revert Env')
+		.action(revertEnv);
+
+	program
+		.command('head')
+		.description('Get the current version of ENV')
+		.action(getCurrentVersion);
 
 	program.parse(process.argv);
 })();

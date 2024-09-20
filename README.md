@@ -54,11 +54,11 @@ ssm-cli init
 
 # Short command: ssm-cli init --sync
 
-# Push environment variables (environment is develop)
-ssm-cli push -d
+# Push environment variables (default is develop)
+ssm-cli push
 
-# Pull environment variables (environment is develop)
-ssm-cli pull -d
+# Pull environment variables (default is develop)
+ssm-cli pull
 ```
 
 ## Commands
@@ -71,7 +71,7 @@ ssm-cli login
 ```
 
 `sync`
-Sync repository from Gitlab to SSM Registry.
+Synchronize repository from Gitlab to SSM Registry.
 
 ```sh
 ssm-cli sync
@@ -111,13 +111,36 @@ ssm-cli push [option]
 - `-s, --stagding` Push env Stagding
 - `-c, --cicd` Push env CICD
 
+`head`
+Show the current version of environment variables
+
+```sh
+ssm-cli head
+```
+
+`log`
+Log the history of the changes of environment variables
+
+```sh
+ssm-cli log
+```
+
+- `--oneline` Show in one line
+
+`revert`
+Revert to any previous version of environment variables
+
+```sh
+ssm-cli revert <version>
+```
+
 ## Contributors
 
 <p>
     <tr>
-      <td align="center" valign="top" width="0.33%"><a href="https://github.com/TriThuc2321"><img src="https://images.weserv.nl/?url=https://avatars.githubusercontent.com/u/71278156?v=4&h=50&w=50&fit=cover&mask=circle&maxage=7d" alt="TriThuc2321"/></td>
-      <td align="center" valign="top" width="0.33%"><a href="https://github.com/nxquan"><img src="https://images.weserv.nl/?url=https://avatars.githubusercontent.com/u/99462521?v=4&h=50&w=50&fit=cover&mask=circle&maxage=8d" alt="nxquan"/></td>
-      <td align="center" valign="top" width="0.33%"><a href="https://github.com/ntlong1801"><img src="https://images.weserv.nl/?url=https://avatars.githubusercontent.com/u/101699049?v=4&h=50&w=50&fit=cover&mask=circle&maxage=7d" alt="nxquan"/></td>
-      <td align="center" valign="top" width="0.33%"><a href="https://github.com/PhamDat328"><img src="https://images.weserv.nl/?url=https://avatars.githubusercontent.com/u/92577783?v=4&h=50&w=50&fit=cover&mask=circle&maxage=7d" alt="nxquan"/></td>
+      <td align="center" valign="top" width="0.33%"><a href="https://github.com/TriThuc2321"><img src="https://images.weserv.nl/?url=https://avatars.githubusercontent.com/u/71278156?v=4&h=50&w=50&fit=cover&mask=circle&maxage=3d" alt="TriThuc2321"/></td>
+      <td align="center" valign="top" width="0.33%"><a href="https://github.com/nxquan"><img src="https://images.weserv.nl/?url=https://avatars.githubusercontent.com/u/99462521?v=4&h=50&w=50&fit=cover&mask=circle&maxage=3d" alt="nxquan"/></td>
+      <td align="center" valign="top" width="0.33%"><a href="https://github.com/ntlong1801"><img src="https://images.weserv.nl/?url=https://avatars.githubusercontent.com/u/101699049?v=4&h=50&w=50&fit=cover&mask=circle&maxage=3d" alt="nxquan"/></td>
+      <td align="center" valign="top" width="0.33%"><a href="https://github.com/PhamDat328"><img src="https://images.weserv.nl/?url=https://avatars.githubusercontent.com/u/92577783?v=4&h=50&w=50&fit=cover&mask=circle&maxage=3d" alt="nxquan"/></td>
     </tr>
 </p>

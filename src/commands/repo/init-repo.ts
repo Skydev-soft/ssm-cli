@@ -3,6 +3,7 @@ import {
 	REPO_LINK_KEY,
 	REPO_PATHNAME_KEY,
 } from '@/constants/common';
+import { ENV_VAULT } from '@/constants/envs';
 import repoApi from '@/services/apis/repo';
 import { IMessage } from '@/types/common';
 import { IRepoInitProps } from '@/types/repo';
@@ -34,7 +35,7 @@ const initRepo = async (pathname: string, props: IRepoInitProps) => {
 				[REPO_PATHNAME_KEY]: pathname,
 				[REPO_LINK_KEY]: httpUrlToRepo,
 			},
-			fileName: '.env.vault',
+			fileName: ENV_VAULT,
 		});
 
 		logger.info('Repository initialized');

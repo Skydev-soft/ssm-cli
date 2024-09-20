@@ -16,6 +16,22 @@ export interface IKeyValue {
 	commitMessage: string;
 }
 
+export interface IKeyValueLog {
+	id: string;
+	repositoryId: string;
+	version: string;
+	environment: string;
+	commitMessage: string;
+	timestamp: {
+		createdAt: string;
+		createdBy: {
+			id: string;
+			username: string;
+			email: string;
+		};
+	};
+}
+
 export interface IEnvDetail extends IKeyValue {
 	name: string;
 	url: string;
@@ -30,10 +46,16 @@ export interface IGetLatestEnvParams {
 	environment: string;
 }
 
+export interface IGetEnvByVersionParams {
+	idOrVersion: string;
+	environment: string;
+}
+
 export interface ICreateEnv {
 	repositoryId: string;
 	environment: string;
 	env: string;
+	commitMessage: string;
 }
 
 export interface ICreateEnvResponse extends IMessage {
@@ -54,4 +76,16 @@ export type PullPushEnvOptionProps = {
 	develop?: boolean;
 	staging?: boolean;
 	cicd?: boolean;
+	message: string;
 };
+
+export interface IGetLogsParams {
+	repositoryId: string;
+	environment: string;
+	take: number;
+	page: number;
+}
+
+export interface IGetLogsOptionProps {
+	oneline: boolean;
+}

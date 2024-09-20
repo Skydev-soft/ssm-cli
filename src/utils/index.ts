@@ -1,6 +1,11 @@
 import { ACCESS_TOKEN_KEY } from '@/constants/common';
+import { ENV_VAULT } from '@/constants/envs';
 import authApi from '@/services/apis/auth';
-import { CreateEnvFile, EnvironmentEnum } from '@/types/common';
+import {
+	CreateEnvFile,
+	EnvironmentEnum,
+	IUpdateLocalEnvVersion,
+} from '@/types/common';
 import { PullPushEnvOptionProps } from '@/types/env';
 import fs from 'fs';
 import { logger } from './logger';
@@ -22,6 +27,43 @@ export const createEnvFile = ({ data, fileName }: CreateEnvFile) => {
 			logger.succeed(`${fileName} file created`);
 		}
 	});
+};
+
+export const updateLocalEnvVersion = ({
+	version,
+	fileName = ENV_VAULT,
+}: IUpdateLocalEnvVersion) => {
+	try {
+		const content = fs.readFileSync(fileName, 'utf8');
+		const lines = content.split('\n');
+		let hasEnvVersionLine = false;
+
+		const updatedLines = lines.map((line) => {
+			if (line.startsWith('ENV_VERSION=')) {
+				hasEnvVersionLine = true;
+				return `ENV_VERSION=${version}`;
+			}
+
+			return line;
+		});
+
+		if (!hasEnvVersionLine) {
+			updatedLines.push(`ENV_VERSION=${version}`);
+		}
+
+		const updatedContent = updatedLines.join('\n');
+
+		fs.writeFileSync(fileName, updatedContent);
+	} catch (err) {
+		logger.error(`Error updating ENV_VERSION in ${fileName}:`, err);
+	}
+};
+
+export const getEnvVersion = (fileName = ENV_VAULT) => {
+	const content = fs.readFileSync(fileName, 'utf8');
+	const lines = content.split('\n');
+
+	return lines.find((line) => line.startsWith('ENV_VERSION='))?.split('=')?.[1];
 };
 
 export const getAccessTokenFromFile = (filePath = '.env.me'): string => {
@@ -48,7 +90,7 @@ export const getEnvFromFile = (filePath = '.env'): string => {
 	}
 };
 
-export const getRepoInfoFromFile = (filePath = '.env.vault') => {
+export const getRepoInfoFromFile = (filePath = ENV_VAULT) => {
 	try {
 		const content = fs.readFileSync(filePath, 'utf8');
 
@@ -89,8 +131,8 @@ export const addGitignoreRules = async (filePath = '.gitignore') => {
 	const newRules = `
 # Env files
 .env*
-!.env.project
-!.env.vault
+.env.project
+.env.vault
   `;
 
 	try {
@@ -123,7 +165,7 @@ export const getEnvInfoFromOptions = ({
 	develop,
 	cicd,
 	staging,
-}: PullPushEnvOptionProps) => {
+}: Omit<PullPushEnvOptionProps, 'message'>) => {
 	if (production)
 		return {
 			environment: EnvironmentEnum.PRODUCTION,
