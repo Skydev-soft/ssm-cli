@@ -15,9 +15,23 @@ export const getGitOrigin = () => {
 		process.exit(1);
 	}
 
-	const pathWithNamespace = origin.split(':')[1].split('.git')[0];
-	const namespace = pathWithNamespace.split('/')[0];
-	const path = pathWithNamespace.split('/')[1];
+	let namespace = '';
+	let path = '';
+	let pathWithNamespace = '';
+
+	if (origin.includes('https://')) {
+		// HTTPS
+		const splittedOrigin = origin.split('/');
+		const length = splittedOrigin.length;
+		namespace = splittedOrigin[length - 2];
+		path = splittedOrigin[length - 1].split('.git')[0];
+		pathWithNamespace = `${namespace}/${path}`;
+	} else {
+		// SSH
+		pathWithNamespace = origin.split(':')[1].split('.git')[0];
+		namespace = pathWithNamespace.split('/')[0];
+		path = pathWithNamespace.split('/')[1];
+	}
 
 	return {
 		namespace,
