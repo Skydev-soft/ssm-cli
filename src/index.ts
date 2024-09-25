@@ -39,6 +39,7 @@ import { Command } from 'commander';
 		.option('-p, --production', 'Pull env production')
 		.option('-s, --staging', 'Pull env staging')
 		.option('-c, --cicd', 'Pull env ci cd')
+		.option('-f, --force', 'Force pull env')
 		.action(pullEnv);
 
 	program

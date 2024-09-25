@@ -1,5 +1,5 @@
+import * as diff from 'diff';
 import fs from 'fs';
-import { logger } from './logger';
 
 export const readEnvFile = (filePath: string) => {
 	try {
@@ -10,64 +10,53 @@ export const readEnvFile = (filePath: string) => {
 	}
 };
 
-export const isEmptyFile = (data: string[]) => {
-	if (data.length === 0) {
-		return true;
-	}
+export const mergeEnvContents = (local: string, remote: string) => {
+	const diffResults = diff.diffLines(local, remote);
 
-	for (const line of data) {
-		if (line.trim().length > 0) {
-			return false;
+	let mergedContent = '';
+	let hasConflicts = false;
+
+	for (let i = 0; i < diffResults.length; i++) {
+		const part = diffResults[i];
+
+		if (part.removed || part.added) {
+			if (i == diffResults.length - 1) {
+				mergedContent += part.value;
+			} else if (i < diffResults.length - 1) {
+				const nextPart = diffResults[i + 1];
+
+				if (nextPart.added != part.added && nextPart.removed != part.removed) {
+					const partEndLine = hasEndLineAtTheEndString(part.value);
+					const nextPartEndLine = hasEndLineAtTheEndString(nextPart.value);
+
+					if (nextPart.value.startsWith(part.value)) {
+						mergedContent += nextPart.value;
+					} else {
+						hasConflicts = true;
+						// Local value
+						mergedContent += `${partEndLine ? '' : '\n'}<<<<<<< LOCAL\n`;
+						mergedContent += part.value;
+						mergedContent += `${partEndLine ? '' : '\n'}=======\n`;
+						// Remote value
+						mergedContent += nextPart.value;
+						mergedContent += `${nextPartEndLine ? '' : '\n'}>>>>>>> REMOTE\n`;
+					}
+
+					i++;
+				} else if (!nextPart.added && !nextPart.removed) {
+					mergedContent += part.value;
+				}
+			}
+		} else {
+			mergedContent += part.value;
 		}
 	}
 
-	return true;
+	return { mergedContent, hasConflicts };
 };
 
-export const mergeEnvContents = (local: string[], remote: string[]) => {
-	const merged = [];
-	const remoteMap = new Map(
-		remote.map((line, index) => {
-			return [index, line];
-		}),
-	);
+export const hasEndLineAtTheEndString = (data: string) => {
+	const endline = data.slice(-1);
 
-	if (isEmptyFile(local)) {
-		for (const remoteLine of remoteMap.values()) {
-			merged.push(remoteLine);
-		}
-
-		return merged;
-	}
-
-	let hasConflict = false;
-	for (const [index, localLine] of local.entries()) {
-		if (remoteMap.has(index)) {
-			if (remoteMap.get(index) === localLine) {
-				merged.push(localLine);
-			} else {
-				merged.push(
-					`<<<<<<< Local\n${localLine}\n=======\n${remoteMap.get(
-						index,
-					)}\n>>>>>>> Remote`,
-				);
-				logger.log('CONFLICT on line', index);
-				hasConflict = true;
-			}
-
-			remoteMap.delete(index);
-		} else {
-			merged.push(localLine);
-		}
-	}
-
-	if (hasConflict) {
-		logger.warn('Please resolve conflicts before pushing');
-	}
-
-	for (const remoteLine of remoteMap.values()) {
-		merged.push(remoteLine);
-	}
-
-	return merged;
+	return endline === '\n';
 };
