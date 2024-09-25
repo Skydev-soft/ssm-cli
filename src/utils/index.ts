@@ -53,7 +53,11 @@ export const updateLocalEnvVersion = ({
 
 		const updatedContent = updatedLines.join('\n');
 
-		fs.writeFileSync(fileName, updatedContent);
+		fs.writeFile(fileName, updatedContent, (err) => {
+			if (err) {
+				logger.error(`Error updating ENV_VERSION in ${fileName}:`, err);
+			}
+		});
 	} catch (err) {
 		logger.error(`Error updating ENV_VERSION in ${fileName}:`, err);
 	}
@@ -63,7 +67,9 @@ export const getEnvVersion = (fileName = ENV_VAULT) => {
 	const content = fs.readFileSync(fileName, 'utf8');
 	const lines = content.split('\n');
 
-	return lines.find((line) => line.startsWith('ENV_VERSION='))?.split('=')?.[1];
+	return (
+		lines.find((line) => line.startsWith('ENV_VERSION='))?.split('=')?.[1] ?? ''
+	);
 };
 
 export const getAccessTokenFromFile = (filePath = '.env.me'): string => {

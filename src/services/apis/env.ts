@@ -102,6 +102,10 @@ const envApi = {
 		axiosInstance.get('/key-values/histories', {
 			params,
 		}),
+	getTotalOfForwardVersions: (version: string) =>
+		axiosInstance.get(`key-values/forwards`, {
+			params: { version },
+		}),
 };
 
 export default envApi;
