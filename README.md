@@ -94,6 +94,8 @@ Pull environment variables.
 ssm-cli pull [option]
 ```
 
+- `-f, --force` Force pull env
+
 - `-d, --develop` Pull env Develop (default)
 - `-p, --production` Pull env Production
 - `-s, --stagding` Pull env Stagding
