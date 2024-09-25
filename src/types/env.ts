@@ -76,6 +76,7 @@ export type PullPushEnvOptionProps = {
 	develop?: boolean;
 	staging?: boolean;
 	cicd?: boolean;
+	force?: boolean;
 	message: string;
 };
 
