@@ -7,6 +7,7 @@ import {
 	getEnvInfoFromOptions,
 	getRepoInfoFromFile,
 } from '@/utils';
+import { getEnvFilePath } from '@/utils/file';
 import { logger } from '@/utils/logger';
 
 const pushEnv = async (props: PullPushEnvOptionProps) => {
@@ -18,7 +19,7 @@ const pushEnv = async (props: PullPushEnvOptionProps) => {
 		const repoInfo = getRepoInfoFromFile();
 		if (!repoInfo) return;
 
-		const env = getEnvFromFile(fileName);
+		const env = getEnvFromFile(getEnvFilePath(fileName));
 
 		if (!env) return;
 

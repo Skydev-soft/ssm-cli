@@ -1,4 +1,3 @@
-import { WEBSITE_URL } from '@/constants/envs';
 import authApi from '@/services/apis/auth';
 import { addGitignoreRules, pollForToken } from '@/utils';
 import { logger } from '@/utils/logger';
@@ -12,8 +11,8 @@ const login = async () => {
 
 	try {
 		const loginSession = await authApi.createCLILoginSession();
-		const sectionId = loginSession.data.id;
-		const loginUrl = `${WEBSITE_URL}/cli-sign-in?session-id=${sectionId}`;
+		const sectionId = loginSession.data.id ?? '';
+		const loginUrl = `${process.env.WEBSITE_URL}/cli-sign-in?session-id=${sectionId}`;
 
 		logger.info(`\nLogin URL: ${loginUrl}`);
 
@@ -31,6 +30,7 @@ const login = async () => {
 
 		logger.succeed('\n Successfully logged in!');
 		spinner2.succeed().stop();
+
 		addGitignoreRules();
 	} catch (error) {
 		spinner.fail('Login process failed');

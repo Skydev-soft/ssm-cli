@@ -1,5 +1,14 @@
+import { WORKING_DIR_KEY } from '@/constants/common';
 import * as diff from 'diff';
 import fs from 'fs';
+import path from 'path';
+import { getRepoInfoFromFile } from '.';
+
+export const getEnvFilePath = (fileName: string) => {
+	const repoInfo = getRepoInfoFromFile();
+
+	return path.resolve(repoInfo?.[WORKING_DIR_KEY] ?? '', fileName);
+};
 
 export const readEnvFile = (filePath: string) => {
 	try {

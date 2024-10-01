@@ -1,8 +1,14 @@
-import { APP_NAME } from '@/constants/envs';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { decryptDataWithAES, encryptDataWithAES } from './encrypt-decrypt';
+import {
+	decryptDataWithAES,
+	decryptKeyManual,
+	encryptDataWithAES,
+	encryptKeyManual,
+} from './encrypt-decrypt';
+
+const APP_NAME = process.env.APP_NAME ?? 'ssm-cli';
 
 const getAppDataPath = () => {
 	const homeDir = os.homedir();
@@ -28,13 +34,14 @@ const ensureDirectoryExistence = (filePath: string) => {
 
 export const saveToken = async (token: string) => {
 	const appDataPath = getAppDataPath();
-	const tokenFilePath = path.join(appDataPath, 'me.token.enc');
+	const tokenFilePath = path.join(appDataPath, process.env.PAT_FILENAME ?? '');
 
 	ensureDirectoryExistence(tokenFilePath);
 
 	const fileContent = await encryptDataWithAES(token);
+	const encryptedFileContent = encryptKeyManual(JSON.stringify(fileContent));
 
-	fs.writeFileSync(tokenFilePath, JSON.stringify(fileContent), {
+	fs.writeFileSync(tokenFilePath, JSON.stringify(encryptedFileContent), {
 		mode: 0o600,
 	});
 };
@@ -42,15 +49,21 @@ export const saveToken = async (token: string) => {
 export const loadToken = async () => {
 	const appDataPath = getAppDataPath();
 
-	const tokenFilePath = path.join(appDataPath, 'me.token.enc');
+	const tokenFilePath = path.join(appDataPath, process.env.PAT_FILENAME ?? '');
 
 	if (!fs.existsSync(tokenFilePath)) {
 		return null;
 	}
 
-	const { encryptedData, iv, clientKey } = JSON.parse(
+	const encryptedFileContent = JSON.parse(
 		fs.readFileSync(tokenFilePath, 'utf8'),
 	);
 
-	return await decryptDataWithAES(encryptedData, iv, clientKey);
+	const fileContent = JSON.parse(decryptKeyManual(encryptedFileContent));
+
+	const { encryptedData, iv, clientKey } = fileContent;
+
+	const data = await decryptDataWithAES(encryptedData, iv, clientKey);
+
+	return data;
 };

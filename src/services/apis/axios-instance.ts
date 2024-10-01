@@ -1,12 +1,14 @@
-import { API_URL } from '@/constants/envs';
 import { IMessage } from '@/types/common';
 import { convertToCookieString } from '@/utils';
 import { loadToken } from '@/utils/os';
 import type { AxiosError } from 'axios';
 import axios from 'axios';
+import { config } from 'dotenv';
+
+config();
 
 const axiosInstance = axios.create({
-	baseURL: `${API_URL}/api`,
+	baseURL: `${process.env.API_URL}/api`,
 	headers: {
 		'Content-Type': 'application/json',
 	},
@@ -25,11 +27,16 @@ axiosInstance.interceptors.response.use(
 );
 
 axiosInstance.interceptors.request.use(async (config) => {
+	if (config.url?.includes('cli/login-session')) {
+		return config;
+	}
+
 	const accessToken = await loadToken();
 
 	if (accessToken) {
 		config.headers.Authorization = `Bearer ${accessToken}`;
 	}
+
 	return config;
 });
 
