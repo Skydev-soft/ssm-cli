@@ -33,6 +33,10 @@ jobs:
         run: |
           echo "WEBSITE_URL=${{ secrets.WEBSITE_URL }}" >> .env
           echo "API_URL=${{ secrets.API_URL }}" >> .env
+          echo "ENV_VAULT=${{ secrets.ENV_VAULT }}" >> .env
+          echo "APP_NAME=${{ secrets.APP_NAME }}" >> .env
+          echo "PAT_FILENAME=${{ secrets.PAT_FILENAME }}" >> .env
+          echo "ENCRYPTION_KEY=${{ secrets.ENCRYPTION_KEY }}" >> .env
 
       - name: Build app
         run: npm run build

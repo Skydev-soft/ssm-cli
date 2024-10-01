@@ -49,10 +49,10 @@ ssm-cli login
 # Sync repository from Gitlab to SSM Registry
 ssm-cli sync
 
-# Initialize a repository by pathname (default is current repository)
-ssm-cli init
+# Initialize a repository by repo-name (default is current repository)
+ssm-cli init .
 
-# Short command: ssm-cli init --sync
+# Short command: ssm-cli init --sync .
 
 # Push environment variables (default is develop)
 ssm-cli push -m "commit message"
@@ -81,10 +81,11 @@ ssm-cli sync
 Initialize a repository by pathname.
 
 ```sh
-ssm-cli init [pathname] [option]
+ssm-cli init [option] <working-dir>
 ```
 
-- `pathname` The pathname of the repository to sync. If not specified, the current repository (GIT) will be used.
+- `-n, --name <repo-name>` The pathname of the repository to sync. If not specified, the current repository (GIT) will be used. I can access this website to get repo-name <a href="https://web-ssm.skydev.vn/">Skydev Secret Management</a>
+- `working-dir` The directory will include .env file. Default is `.` (Current directory)
 - `--sync` Sync repository from Gitlab to SSM Registry
 
 `pull`
@@ -93,6 +94,8 @@ Pull environment variables.
 ```sh
 ssm-cli pull [option]
 ```
+
+- `-f, --force` Force pull env
 
 - `-d, --develop` Pull env Develop (default)
 - `-p, --production` Pull env Production

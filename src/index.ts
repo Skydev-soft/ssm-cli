@@ -12,6 +12,9 @@ import {
 import { packageJSON } from '@/utils/package-json.js';
 import { renderTitle } from '@/utils/renderTitle.js';
 import { Command } from 'commander';
+import { config } from 'dotenv';
+
+config();
 
 (async () => {
 	renderTitle();
@@ -55,7 +58,11 @@ import { Command } from 'commander';
 	program
 		.command('init')
 		.description('Initialize repository')
-		.argument('[pathname]', 'Repository pathname')
+		.option('-n, --name <repo-name>', 'Repository pathname')
+		.argument(
+			'<root-folder>',
+			'Root folder of the repository, must be in last position',
+		)
 		.option(
 			'--sync',
 			'Synchronize the current repository (GIT) from Gitlab to SSM Registry',

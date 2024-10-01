@@ -130,3 +130,60 @@ export async function decryptDataWithRSA(
 	const decoder = new TextDecoder();
 	return decoder.decode(decryptedData);
 }
+
+export const encryptKeyManual = (key: string) => {
+	const encryptionKey = process.env.ENCRYPTION_KEY;
+
+	if (!encryptionKey) {
+		throw new Error('Encryption key is not set');
+	}
+
+	// Ensure the encryption key is the correct length (32 bytes for AES-256)
+	const normalizedKey = crypto.scryptSync(encryptionKey, 'salt', 32);
+
+	// Generate a random IV for each encryption
+	const iv = crypto.randomBytes(16);
+
+	const cipher = crypto.createCipheriv('aes-256-cbc', normalizedKey, iv);
+
+	// Encrypt the key
+	const encryptedKey = Buffer.concat([
+		cipher.update(key, 'utf8'),
+		cipher.final(),
+	]);
+
+	// Combine IV and encrypted key
+	return iv.toString('hex') + ':' + encryptedKey.toString('hex');
+};
+
+export const decryptKeyManual = (encryptedData: string) => {
+	const encryptionKey = process.env.ENCRYPTION_KEY;
+
+	if (!encryptionKey) {
+		throw new Error('Encryption key is not set');
+	}
+
+	// Ensure the encryption key is the correct length (32 bytes for AES-256)
+	const normalizedKey = crypto.scryptSync(encryptionKey, 'salt', 32);
+
+	// Split the encrypted data into IV and encrypted key
+	const [ivHex, encryptedKeyHex] = encryptedData.split(':');
+	if (!ivHex || !encryptedKeyHex) {
+		throw new Error('Invalid encrypted data format');
+	}
+
+	// Convert hex strings back to Buffers
+	const iv = Buffer.from(ivHex, 'hex');
+	const encryptedKey = Buffer.from(encryptedKeyHex, 'hex');
+
+	// Create decipher
+	const decipher = crypto.createDecipheriv('aes-256-cbc', normalizedKey, iv);
+
+	// Decrypt the key
+	const decryptedKey = Buffer.concat([
+		decipher.update(encryptedKey),
+		decipher.final(),
+	]);
+
+	return decryptedKey.toString('utf8');
+};

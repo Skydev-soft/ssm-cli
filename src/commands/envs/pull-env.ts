@@ -1,4 +1,4 @@
-import { REPO_PATHNAME_KEY } from '@/constants/common';
+import { REPO_NAME_KEY } from '@/constants/common';
 import envApi from '@/services/apis/env';
 import { IMessage } from '@/types/common';
 import { PullPushEnvOptionProps } from '@/types/env';
@@ -8,18 +8,16 @@ import {
 	getRepoInfoFromFile,
 	updateLocalEnvVersion,
 } from '@/utils';
-import { mergeEnvContents, readEnvFile } from '@/utils/file';
+import { getEnvFilePath, mergeEnvContents, readEnvFile } from '@/utils/file';
 import { logger } from '@/utils/logger';
 import fs from 'fs';
 
-export const updateEnvFile = async (
+export const updateEnvFileWhenPulling = async (
 	remoteEnv: string,
 	fileName: string,
 	props: PullPushEnvOptionProps,
 ) => {
 	const { force } = props;
-
-	console.log(remoteEnv);
 
 	if (force) {
 		fs.writeFileSync(fileName, remoteEnv, 'utf-8');
@@ -51,7 +49,7 @@ const pullEnv = async (props: PullPushEnvOptionProps) => {
 
 		const { decryptedData, version } = await envApi.getLatestEnv({
 			environment,
-			pathWithNamespace: repoInfo[REPO_PATHNAME_KEY],
+			pathWithNamespace: repoInfo[REPO_NAME_KEY],
 		});
 
 		const currentEnvVersion = getEnvVersion();
@@ -62,7 +60,7 @@ const pullEnv = async (props: PullPushEnvOptionProps) => {
 		}
 
 		if (decryptedData) {
-			updateEnvFile(decryptedData, fileName, props);
+			updateEnvFileWhenPulling(decryptedData, getEnvFilePath(fileName), props);
 
 			updateLocalEnvVersion({ version });
 

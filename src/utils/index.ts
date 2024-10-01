@@ -1,5 +1,4 @@
 import { ACCESS_TOKEN_KEY } from '@/constants/common';
-import { ENV_VAULT } from '@/constants/envs';
 import authApi from '@/services/apis/auth';
 import {
 	CreateEnvFile,
@@ -23,15 +22,13 @@ export const createEnvFile = ({ data, fileName }: CreateEnvFile) => {
 	fs.writeFile(fileName, content, (err) => {
 		if (err) {
 			logger.error(`Error creating ${fileName} file:`, err);
-		} else {
-			logger.succeed(`${fileName} file created`);
 		}
 	});
 };
 
 export const updateLocalEnvVersion = ({
 	version,
-	fileName = ENV_VAULT,
+	fileName = process.env.ENV_VAULT ?? '',
 }: IUpdateLocalEnvVersion) => {
 	try {
 		const content = fs.readFileSync(fileName, 'utf8');
@@ -63,7 +60,7 @@ export const updateLocalEnvVersion = ({
 	}
 };
 
-export const getEnvVersion = (fileName = ENV_VAULT) => {
+export const getEnvVersion = (fileName = process.env.ENV_VAULT ?? '') => {
 	const content = fs.readFileSync(fileName, 'utf8');
 	const lines = content.split('\n');
 
@@ -96,7 +93,7 @@ export const getEnvFromFile = (filePath = '.env'): string => {
 	}
 };
 
-export const getRepoInfoFromFile = (filePath = ENV_VAULT) => {
+export const getRepoInfoFromFile = (filePath = process.env.ENV_VAULT ?? '') => {
 	try {
 		const content = fs.readFileSync(filePath, 'utf8');
 
@@ -108,7 +105,7 @@ export const getRepoInfoFromFile = (filePath = ENV_VAULT) => {
 
 		return repoInfo;
 	} catch (err) {
-		logger.warn('No repository found. Please run `ssm-cli repo init` first');
+		logger.warn('No repository found. Please run `ssm-cli init` first');
 		return null;
 	}
 };
@@ -137,8 +134,8 @@ export const addGitignoreRules = async (filePath = '.gitignore') => {
 	const newRules = `
 # Env files
 .env*
-.env.project
-.env.vault
+!.env.project
+!.env.vault
   `;
 
 	try {
