@@ -10,6 +10,8 @@ const login = async () => {
 	const spinner = ora('Initiating login process...').start();
 
 	try {
+		console.log(process.env.WEBSITE_URL);
+
 		const loginSession = await authApi.createCLILoginSession();
 		const sectionId = loginSession.data.id ?? '';
 		const loginUrl = `${process.env.WEBSITE_URL}/cli-sign-in?session-id=${sectionId}`;
