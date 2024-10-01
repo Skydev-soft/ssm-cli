@@ -1,9 +1,9 @@
 import {
 	REPO_ID_KEY,
 	REPO_LINK_KEY,
-	REPO_PATHNAME_KEY,
+	REPO_NAME_KEY,
+	WORKING_DIR_KEY,
 } from '@/constants/common';
-import { ENV_VAULT } from '@/constants/envs';
 import repoApi from '@/services/apis/repo';
 import { IMessage } from '@/types/common';
 import { IRepoInitProps } from '@/types/repo';
@@ -12,30 +12,42 @@ import { getGitOrigin } from '@/utils/git';
 import { logger } from '@/utils/logger';
 import syncRepo from './sync-repo';
 
-const initRepo = async (pathname: string, props: IRepoInitProps) => {
+const initRepo = async (
+	root: string,
+	repo: { name: string },
+	props: IRepoInitProps,
+) => {
 	const { sync } = props;
+	let repoName = repo?.name;
+	const workingDir = root;
 
 	try {
 		if (sync) {
 			await syncRepo();
 		}
 
-		if (!pathname) {
+		if (
+			!repo?.name ||
+			repo?.name?.includes('.') ||
+			repo?.name?.includes('/') ||
+			repo?.name?.includes('\\')
+		) {
 			const { namespace, path } = getGitOrigin();
-			pathname = `${namespace}-${path}`;
+			repoName = `${namespace}-${path}`;
 		}
 
 		const {
 			data: { httpUrlToRepo, id },
-		} = await repoApi.getRepo(pathname);
+		} = await repoApi.getRepo(repoName);
 
 		createEnvFile({
 			data: {
 				[REPO_ID_KEY]: id,
-				[REPO_PATHNAME_KEY]: pathname,
+				[REPO_NAME_KEY]: repoName,
 				[REPO_LINK_KEY]: httpUrlToRepo,
+				[WORKING_DIR_KEY]: workingDir,
 			},
-			fileName: ENV_VAULT,
+			fileName: process.env.ENV_VAULT ?? '',
 		});
 
 		logger.info('Repository initialized');
