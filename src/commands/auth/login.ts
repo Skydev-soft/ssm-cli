@@ -8,8 +8,6 @@ import open from 'open';
 import ora from 'ora';
 
 const login = async () => {
-	console.log(process.env.WEBSITE_URL);
-
 	const spinner = ora('Initiating login process...').start();
 
 	try {
