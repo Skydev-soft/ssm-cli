@@ -1,6 +1,7 @@
 import { API_URL } from '@/constants/envs';
 import { IMessage } from '@/types/common';
-import { convertToCookieString, getAccessTokenFromFile } from '@/utils';
+import { convertToCookieString } from '@/utils';
+import { loadToken } from '@/utils/os';
 import type { AxiosError } from 'axios';
 import axios from 'axios';
 
@@ -23,8 +24,9 @@ axiosInstance.interceptors.response.use(
 	},
 );
 
-axiosInstance.interceptors.request.use((config) => {
-	const accessToken = getAccessTokenFromFile();
+axiosInstance.interceptors.request.use(async (config) => {
+	const accessToken = await loadToken();
+
 	if (accessToken) {
 		config.headers.Authorization = `Bearer ${accessToken}`;
 	}

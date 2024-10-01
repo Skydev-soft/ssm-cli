@@ -9,3 +9,4 @@ export const DEFAULT_TAKE_LOGS = 4;
 export const DEFAULT_TAKE_ONE_LINE_LOGS = 20;
 
 export const ENV_VAULT = '.env.vault';
+export const APP_NAME = 'ssm-cli';

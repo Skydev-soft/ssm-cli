@@ -12,6 +12,9 @@ import {
 import { packageJSON } from '@/utils/package-json.js';
 import { renderTitle } from '@/utils/renderTitle.js';
 import { Command } from 'commander';
+import { config } from 'dotenv';
+
+config();
 
 (async () => {
 	renderTitle();
