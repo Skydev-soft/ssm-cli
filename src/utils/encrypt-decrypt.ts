@@ -1,5 +1,5 @@
+import { getEncryptionKeyConfig } from '@/utils/config';
 import * as crypto from 'crypto';
-import { getEncryptionKeyConfig } from './config';
 
 export async function generateRSAKeyPair() {
 	const key = await crypto.webcrypto.subtle.generateKey(
@@ -179,4 +179,10 @@ export const decryptKeyManual = (encryptedData: string) => {
 	]);
 
 	return decryptedKey.toString('utf8');
+};
+
+export const generateEncryptionKey = () => {
+	const key = crypto.randomBytes(32);
+
+	return key.toString('hex');
 };

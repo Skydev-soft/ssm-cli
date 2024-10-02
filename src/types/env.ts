@@ -81,7 +81,7 @@ export type PullPushEnvOptionProps = {
 };
 
 export interface IGetLogsParams {
-	repositoryId: string;
+	pathWithNamespace: string;
 	environment: string;
 	take: number;
 	page: number;

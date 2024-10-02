@@ -6,9 +6,15 @@ import {
 	getEnvInfoFromOptions,
 	getEnvVersion,
 	getRepoInfoFromFile,
+	isExistEnvVersionFile,
 	updateLocalEnvVersion,
 } from '@/utils';
-import { getEnvFilePath, mergeEnvContents, readEnvFile } from '@/utils/file';
+import {
+	getEnvFilePath,
+	isExistFile,
+	mergeEnvContents,
+	readEnvFile,
+} from '@/utils/file';
 import { logger } from '@/utils/logger';
 import fs from 'fs';
 
@@ -19,7 +25,7 @@ export const updateEnvFileWhenPulling = async (
 ) => {
 	const { force } = props;
 
-	if (force) {
+	if (force || !isExistFile(fileName)) {
 		fs.writeFileSync(fileName, remoteEnv, 'utf-8');
 	} else {
 		const localEnv = readEnvFile(fileName).join('\n');
@@ -52,11 +58,13 @@ const pullEnv = async (props: PullPushEnvOptionProps) => {
 			pathWithNamespace: repoInfo[REPO_NAME_KEY],
 		});
 
-		const currentEnvVersion = getEnvVersion();
+		if (isExistEnvVersionFile()) {
+			const currentEnvVersion = getEnvVersion();
 
-		if (currentEnvVersion === version) {
-			logger.log('Already up to date.');
-			return;
+			if (currentEnvVersion === version) {
+				logger.log('Already up to date.');
+				return;
+			}
 		}
 
 		if (decryptedData) {
