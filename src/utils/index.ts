@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN_KEY } from '@/constants/common';
+import { ACCESS_TOKEN_KEY, ENV_VAULT } from '@/constants/common';
 import authApi from '@/services/apis/auth';
 import {
 	CreateEnvFile,
@@ -28,7 +28,7 @@ export const createEnvFile = ({ data, fileName }: CreateEnvFile) => {
 
 export const updateLocalEnvVersion = ({
 	version,
-	fileName = process.env.ENV_VAULT ?? '',
+	fileName = ENV_VAULT ?? '',
 }: IUpdateLocalEnvVersion) => {
 	try {
 		const content = fs.readFileSync(fileName, 'utf8');
@@ -60,7 +60,7 @@ export const updateLocalEnvVersion = ({
 	}
 };
 
-export const getEnvVersion = (fileName = process.env.ENV_VAULT ?? '') => {
+export const getEnvVersion = (fileName = ENV_VAULT ?? '') => {
 	const content = fs.readFileSync(fileName, 'utf8');
 	const lines = content.split('\n');
 
@@ -93,7 +93,7 @@ export const getEnvFromFile = (filePath = '.env'): string => {
 	}
 };
 
-export const getRepoInfoFromFile = (filePath = process.env.ENV_VAULT ?? '') => {
+export const getRepoInfoFromFile = (filePath = ENV_VAULT ?? '') => {
 	try {
 		const content = fs.readFileSync(filePath, 'utf8');
 

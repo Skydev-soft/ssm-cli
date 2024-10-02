@@ -1,4 +1,5 @@
 import {
+	ENV_VAULT,
 	REPO_ID_KEY,
 	REPO_LINK_KEY,
 	REPO_NAME_KEY,
@@ -47,7 +48,7 @@ const initRepo = async (
 				[REPO_LINK_KEY]: httpUrlToRepo,
 				[WORKING_DIR_KEY]: workingDir,
 			},
-			fileName: process.env.ENV_VAULT ?? '',
+			fileName: ENV_VAULT ?? '',
 		});
 
 		logger.info('Repository initialized');

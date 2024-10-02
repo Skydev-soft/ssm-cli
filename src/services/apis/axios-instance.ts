@@ -1,3 +1,4 @@
+import { API_URL } from '@/constants/common';
 import { IMessage } from '@/types/common';
 import { convertToCookieString } from '@/utils';
 import { loadToken } from '@/utils/os';
@@ -8,7 +9,7 @@ import { config } from 'dotenv';
 config();
 
 const axiosInstance = axios.create({
-	baseURL: `${process.env.API_URL}/api`,
+	baseURL: `${API_URL}/api`,
 	headers: {
 		'Content-Type': 'application/json',
 	},

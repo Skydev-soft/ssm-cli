@@ -1,5 +1,7 @@
+import { WEBSITE_URL } from '@/constants/common';
 import authApi from '@/services/apis/auth';
 import { addGitignoreRules, pollForToken } from '@/utils';
+import { getEncryptionKeyConfig } from '@/utils/config';
 import { logger } from '@/utils/logger';
 import { saveToken } from '@/utils/os';
 import chalk from 'chalk';
@@ -9,10 +11,13 @@ import ora from 'ora';
 const login = async () => {
 	const spinner = ora('Initiating login process...').start();
 
+	// Validate the encryption key is set
+	getEncryptionKeyConfig();
+
 	try {
 		const loginSession = await authApi.createCLILoginSession();
 		const sectionId = loginSession.data.id ?? '';
-		const loginUrl = `${process.env.WEBSITE_URL}/cli-sign-in?session-id=${sectionId}`;
+		const loginUrl = `${WEBSITE_URL}/cli-sign-in?session-id=${sectionId}`;
 
 		logger.info(`\nLogin URL: ${loginUrl}`);
 

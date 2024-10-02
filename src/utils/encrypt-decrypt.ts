@@ -1,4 +1,5 @@
 import * as crypto from 'crypto';
+import { getEncryptionKeyConfig } from './config';
 
 export async function generateRSAKeyPair() {
 	const key = await crypto.webcrypto.subtle.generateKey(
@@ -132,11 +133,7 @@ export async function decryptDataWithRSA(
 }
 
 export const encryptKeyManual = (key: string) => {
-	const encryptionKey = process.env.ENCRYPTION_KEY;
-
-	if (!encryptionKey) {
-		throw new Error('Encryption key is not set');
-	}
+	const encryptionKey = getEncryptionKeyConfig();
 
 	// Ensure the encryption key is the correct length (32 bytes for AES-256)
 	const normalizedKey = crypto.scryptSync(encryptionKey, 'salt', 32);
@@ -157,11 +154,7 @@ export const encryptKeyManual = (key: string) => {
 };
 
 export const decryptKeyManual = (encryptedData: string) => {
-	const encryptionKey = process.env.ENCRYPTION_KEY;
-
-	if (!encryptionKey) {
-		throw new Error('Encryption key is not set');
-	}
+	const encryptionKey = getEncryptionKeyConfig();
 
 	// Ensure the encryption key is the correct length (32 bytes for AES-256)
 	const normalizedKey = crypto.scryptSync(encryptionKey, 'salt', 32);

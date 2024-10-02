@@ -1,3 +1,4 @@
+import { APP_NAME, PAT_FILENAME } from '@/constants/common';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
@@ -8,14 +9,12 @@ import {
 	encryptKeyManual,
 } from './encrypt-decrypt';
 
-const APP_NAME = process.env.APP_NAME ?? 'ssm-cli';
-
-const getAppDataPath = () => {
+export const getAppDataPath = () => {
 	const homeDir = os.homedir();
 
 	switch (process.platform) {
 		case 'win32':
-			return path.join(process.env.APPDATA ?? '', APP_NAME);
+			return path.join(homeDir, 'AppData', 'Roaming', APP_NAME);
 		case 'darwin':
 			return path.join(homeDir, 'Library', 'Application Support', APP_NAME);
 		case 'linux':
@@ -34,7 +33,7 @@ const ensureDirectoryExistence = (filePath: string) => {
 
 export const saveToken = async (token: string) => {
 	const appDataPath = getAppDataPath();
-	const tokenFilePath = path.join(appDataPath, process.env.PAT_FILENAME ?? '');
+	const tokenFilePath = path.join(appDataPath, PAT_FILENAME ?? '');
 
 	ensureDirectoryExistence(tokenFilePath);
 
@@ -49,7 +48,7 @@ export const saveToken = async (token: string) => {
 export const loadToken = async () => {
 	const appDataPath = getAppDataPath();
 
-	const tokenFilePath = path.join(appDataPath, process.env.PAT_FILENAME ?? '');
+	const tokenFilePath = path.join(appDataPath, PAT_FILENAME ?? '');
 
 	if (!fs.existsSync(tokenFilePath)) {
 		return null;
