@@ -18,7 +18,7 @@ const handleChangeConfig = (data: ISetupConfigOptionsProps) => {
 
 		const config = loadUserConfig();
 
-		config.ENCRYPTION_KEY = privateKey;
+		config.privateKey = privateKey;
 
 		fs.writeFileSync(configFilePath, JSON.stringify(config, null, 2));
 
