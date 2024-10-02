@@ -9,10 +9,10 @@ import open from 'open';
 import ora from 'ora';
 
 const login = async () => {
-	const spinner = ora('Initiating login process...').start();
-
 	// Validate the encryption key is set
 	getEncryptionKeyConfig();
+
+	const spinner = ora('Initiating login process...').start();
 
 	try {
 		const loginSession = await authApi.createCLILoginSession();

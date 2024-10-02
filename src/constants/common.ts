@@ -9,4 +9,7 @@ export const WEBSITE_URL = 'https://web-ssm.skydev.vn';
 export const API_URL = 'https://api-ssm.skydev.vn';
 export const APP_NAME = 'ssm-cli';
 export const ENV_VAULT = '.env.vault';
+export const ENV_VERSION = '.env.version';
 export const PAT_FILENAME = 'pat.enc';
+export const GENERATE_PRIVATE_KEY_URL =
+	'https://web-ssm.skydev.vn/generate-private-key';

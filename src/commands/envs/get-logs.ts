@@ -1,4 +1,4 @@
-import { REPO_ID_KEY } from '@/constants/common';
+import { REPO_NAME_KEY } from '@/constants/common';
 import {
 	DEFAULT_TAKE_LOGS,
 	DEFAULT_TAKE_ONE_LINE_LOGS,
@@ -80,7 +80,7 @@ export const getLogs = async (props: IGetLogsOptionProps) => {
 			const { data } = await envApi.getEnvLogs({
 				page: currentPage,
 				take,
-				repositoryId: repoInfo[REPO_ID_KEY],
+				pathWithNamespace: repoInfo[REPO_NAME_KEY],
 				environment,
 			});
 

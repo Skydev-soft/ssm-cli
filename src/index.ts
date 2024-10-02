@@ -13,6 +13,8 @@ import { packageJSON } from '@/utils/package-json.js';
 import { renderTitle } from '@/utils/renderTitle.js';
 import { Command } from 'commander';
 import { config } from 'dotenv';
+import { getConfig } from './commands/config/get-config';
+import { setupConfig } from './commands/config/setup-config';
 
 config();
 
@@ -27,6 +29,16 @@ config();
 		.name('ssm-cli');
 
 	program.command('login').description('Login to the SSM').action(login);
+
+	const config = program.command('config').description('Configurations');
+
+	config
+		.command('set')
+		.option('-pk, --private-key <key>', 'Set encryption key')
+		.description('Set up config for SSM')
+		.action(setupConfig);
+
+	config.command('get').description('Get all configurations').action(getConfig);
 
 	program
 		.command('sync')

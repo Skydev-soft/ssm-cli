@@ -11,3 +11,7 @@ export interface IVerifyCLILoginSessionResponse extends IMessage {
 		accessToken: string;
 	};
 }
+
+export interface ISetupConfigOptionsProps {
+	privateKey: string;
+}

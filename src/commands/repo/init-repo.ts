@@ -41,6 +41,7 @@ const initRepo = async (
 			data: { httpUrlToRepo, id },
 		} = await repoApi.getRepo(repoName);
 
+		// Create .env.vault file
 		createEnvFile({
 			data: {
 				[REPO_ID_KEY]: id,
