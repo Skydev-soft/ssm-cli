@@ -20,12 +20,12 @@ export const loadUserConfig = () => {
 export const getEncryptionKeyConfig = () => {
 	const config = loadUserConfig();
 
-	if (!config?.ENCRYPTION_KEY) {
+	if (!config?.privateKey) {
 		logger.warn(
 			`Encryption key is not set. Please set it using 'ssm-cli config set --private-key <key>'. Get key from ${GENERATE_PRIVATE_KEY_URL}`,
 		);
 		process.exit(1);
 	}
 
-	return config.ENCRYPTION_KEY;
+	return config.privateKey;
 };

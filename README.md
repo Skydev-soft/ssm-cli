@@ -43,13 +43,17 @@ ssm-cli [command] [options]
 ```sh
 # Prerequisites: Your project have version controls (GIT) to a Gitlab repository
 
+# Private key must be added before you login. Please set it using 'ssm-cli config set --private-key <key>'. Short of --private-key is -pk
+# Get key from https://web-ssm.skydev.vn/generate-private-key
+ssm-cli config set -pk <private-key>
+
 # Login to the Skydev Secret Management system
 ssm-cli login
 
 # Sync repository from Gitlab to SSM Registry
 ssm-cli sync
 
-# Initialize a repository by repo-name (default is current repository)
+# Initialize a repository by repo-name (default is current repository, the folder stores .env file)
 ssm-cli init .
 
 # Short command: ssm-cli init --sync .
@@ -62,6 +66,19 @@ ssm-cli pull
 ```
 
 ## Commands
+
+`config`
+Get and change local configurations CLI.
+
+```sh
+ssm-cli config get
+```
+
+```sh
+ssm-cli config set <key> <value>
+```
+
+- `--private-key <value>` Set private key for encrypting access token which stored in your machine
 
 `login`
 Login to the Skydev Secret Management system.

@@ -23,7 +23,7 @@ export const getAppDataPath = () => {
 	}
 };
 
-const ensureDirectoryExistence = (filePath: string) => {
+export const ensureDirectoryExistence = (filePath: string) => {
 	const dirname = path.dirname(filePath);
 
 	if (!fs.existsSync(dirname)) {
