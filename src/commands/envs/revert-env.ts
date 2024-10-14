@@ -1,5 +1,6 @@
 import envApi from '@/services/apis/env';
 import { IMessage } from '@/types/common';
+import { IEnvironments } from '@/types/env';
 import {
 	createEnvFile,
 	getEnvInfoFromOptions,
@@ -10,14 +11,14 @@ import {
 import { getEnvFilePath } from '@/utils/file';
 import { logger } from '@/utils/logger';
 
-const revertEnv = async (version: string) => {
+const revertEnv = async (version: string, props: IEnvironments) => {
 	try {
-		const { environment, fileName } = getEnvInfoFromOptions({ develop: true });
+		const { environment, fileName } = getEnvInfoFromOptions(props);
 		const repoInfo = getRepoInfoFromFile();
 
 		if (!repoInfo) return;
 
-		const currentEnvVersion = getEnvVersion();
+		const currentEnvVersion = getEnvVersion(environment);
 
 		if (currentEnvVersion === version) {
 			logger.log('Already in this version.');
@@ -35,7 +36,7 @@ const revertEnv = async (version: string) => {
 				fileName: getEnvFilePath(fileName),
 			});
 
-			updateLocalEnvVersion({ version });
+			updateLocalEnvVersion({ version, environment });
 
 			logger.info('Revert env successfully');
 		}

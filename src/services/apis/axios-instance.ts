@@ -1,6 +1,6 @@
 import { API_URL } from '@/constants/common';
 import { IMessage } from '@/types/common';
-import { convertToCookieString } from '@/utils';
+import { convertToCookieString, logger } from '@/utils';
 import { loadToken } from '@/utils/os';
 import type { AxiosError } from 'axios';
 import axios from 'axios';
@@ -28,14 +28,22 @@ axiosInstance.interceptors.response.use(
 );
 
 axiosInstance.interceptors.request.use(async (config) => {
-	if (config.url?.includes('cli/login-session')) {
+	try {
+		if (config.url?.includes('cli/login-session')) {
+			return config;
+		}
+
+		const accessToken = await loadToken();
+
+		if (accessToken) {
+			config.headers.Authorization = `Bearer ${accessToken}`;
+		}
+
 		return config;
-	}
-
-	const accessToken = await loadToken();
-
-	if (accessToken) {
-		config.headers.Authorization = `Bearer ${accessToken}`;
+	} catch {
+		logger.warn(
+			'May be you change private key for decrypting access token. Please re-login',
+		);
 	}
 
 	return config;
