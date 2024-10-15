@@ -1,24 +1,32 @@
 import envApi from '@/services/apis/env';
-import { getEnvVersion } from '@/utils';
+import { IEnvironments } from '@/types/env';
+import { getEnvInfoFromOptions, getEnvVersion } from '@/utils';
 import { logger } from '@/utils/logger';
 import chalk from 'chalk';
 
-const getCurrentVersion = async () => {
-	const version = getEnvVersion();
-
+const getCurrentVersion = async (options: IEnvironments) => {
 	try {
-		const { data } = await envApi.getTotalOfForwardVersions(version);
+		const { environment } = getEnvInfoFromOptions(options);
+		const version = getEnvVersion(environment);
 
-		logger.log('\nCurrent version: ' + chalk.cyan(version));
+		const { data } = await envApi.getTotalOfForwardVersions({
+			version,
+			environment,
+		});
+
+		logger.log(
+			`\nCurrent ${environment.toLowerCase()} version: ` + chalk.cyan(version),
+		);
 
 		if (data?.forwardVersionTotal > 0) {
 			logger.log(
 				`Your version is behind by ${data?.forwardVersionTotal} commits, and can be fast-forwarded.\n`,
 			);
+
 			logger.log('(use "ssm-cli pull" to update your local)")');
 		}
 	} catch (error) {
-		logger.error('Error fetching current version', error.message);
+		logger.error(error.message);
 	}
 };
 

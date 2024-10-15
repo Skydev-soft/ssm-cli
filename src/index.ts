@@ -15,6 +15,7 @@ import { Command } from 'commander';
 import { config } from 'dotenv';
 import { getConfig } from './commands/config/get-config';
 import { setupConfig } from './commands/config/setup-config';
+import { AuthMiddleware } from './middlewares';
 
 config();
 
@@ -45,7 +46,7 @@ config();
 		.description(
 			'Synchronize the current repository (GIT) from Gitlab to SSM Registry',
 		)
-		.action(syncRepo);
+		.action(AuthMiddleware(syncRepo));
 
 	program
 		.command('pull')
@@ -55,7 +56,7 @@ config();
 		.option('-s, --staging', 'Pull env staging')
 		.option('-c, --cicd', 'Pull env ci cd')
 		.option('-f, --force', 'Force pull env')
-		.action(pullEnv);
+		.action(AuthMiddleware(pullEnv));
 
 	program
 		.command('push')
@@ -65,7 +66,7 @@ config();
 		.option('-p, --production', 'Push env production')
 		.option('-s, --staging', 'Push env staging')
 		.option('-c, --cicd', 'Push env ci cd')
-		.action(pushEnv);
+		.action(AuthMiddleware(pushEnv));
 
 	program
 		.command('init')
@@ -79,24 +80,36 @@ config();
 			'--sync',
 			'Synchronize the current repository (GIT) from Gitlab to SSM Registry',
 		)
-		.action(initRepo);
+		.action(AuthMiddleware(initRepo));
 
 	program
 		.command('log')
 		.option('--oneline', 'Get brief logs')
+		.option('-d, --develop', 'Head env develop (default)')
+		.option('-p, --production', 'Head env production')
+		.option('-s, --staging', 'Head env staging')
+		.option('-c, --cicd', 'Head env ci cd')
 		.description('Get logs')
-		.action(getLogs);
+		.action(AuthMiddleware(getLogs));
 
 	program
 		.command('revert')
 		.argument('<version>', 'Version of the env')
-		.description('Revert Env')
-		.action(revertEnv);
+		.option('-d, --develop', 'Head env develop (default)')
+		.option('-p, --production', 'Head env production')
+		.option('-s, --staging', 'Head env staging')
+		.option('-c, --cicd', 'Head env ci cd')
+		.description('Revert Env to a specific version of environment')
+		.action(AuthMiddleware(revertEnv));
 
 	program
 		.command('head')
+		.option('-d, --develop', 'Head env develop (default)')
+		.option('-p, --production', 'Head env production')
+		.option('-s, --staging', 'Head env staging')
+		.option('-c, --cicd', 'Head env ci cd')
 		.description('Get the current version of ENV')
-		.action(getCurrentVersion);
+		.action(AuthMiddleware(getCurrentVersion));
 
 	program.parse(process.argv);
 })();

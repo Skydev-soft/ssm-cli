@@ -2,6 +2,7 @@ import {
 	ICreateEnv,
 	ICreateEnvResponse,
 	IGetEnvByVersionParams,
+	IGetForwardVersions,
 	IGetLatestEnvParams,
 	IGetLogsParams,
 	IUpdateEnv,
@@ -93,6 +94,7 @@ const envApi = {
 
 			updateLocalEnvVersion({
 				version: updatedEnvData.version as string,
+				environment,
 			});
 		}
 	},
@@ -102,9 +104,9 @@ const envApi = {
 		axiosInstance.get('/key-values/histories', {
 			params,
 		}),
-	getTotalOfForwardVersions: (version: string) =>
+	getTotalOfForwardVersions: (params: IGetForwardVersions) =>
 		axiosInstance.get(`key-values/forwards`, {
-			params: { version },
+			params,
 		}),
 };
 
