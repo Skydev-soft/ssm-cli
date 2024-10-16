@@ -9,6 +9,7 @@ export type CreateEnvFile = {
 
 export interface IUpdateLocalEnvVersion {
 	version: string;
+	environment: string;
 	fileName?: string;
 }
 
