@@ -61,7 +61,7 @@ export const getLogs = async (props: IGetLogsOptionProps) => {
 		const repoInfo = getRepoInfoFromFile();
 		if (!repoInfo) return;
 
-		const { environment } = getEnvInfoFromOptions({ develop: true });
+		const { environment } = getEnvInfoFromOptions(props);
 
 		const rl = readline.createInterface({
 			input: process.stdin,
@@ -71,7 +71,7 @@ export const getLogs = async (props: IGetLogsOptionProps) => {
 		let currentPage = 1;
 		let logsShown = 0;
 		let hasMoreLogs = true;
-		const currentEnvVersion = getEnvVersion();
+		const currentEnvVersion = getEnvVersion(environment);
 
 		// Handle input events
 		logKeystrokesListeners(rl, currentPage);
@@ -109,6 +109,8 @@ export const getLogs = async (props: IGetLogsOptionProps) => {
 		const { message = '' } = error as IMessage;
 
 		logger.error(message);
+
+		process.exit(1);
 	}
 };
 

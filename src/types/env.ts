@@ -1,6 +1,23 @@
 import type { IMessage } from './common';
 import type { IRepo } from './repo';
 
+export enum EnvironmentEnum {
+	Production = 'production',
+	Develop = 'develop',
+	Staging = 'staging',
+	CICD = 'cicd',
+}
+export interface IEnvironments {
+	production?: boolean;
+	develop?: boolean;
+	staging?: boolean;
+	cicd?: boolean;
+}
+
+export interface IEnvQuery {
+	pathWithNamespace: string;
+	environment: string;
+}
 export interface IEnvResponse extends IMessage {
 	data: IKeyValue;
 }
@@ -41,10 +58,7 @@ export interface IEnv extends IRepo {
 	environment: string;
 }
 
-export interface IGetLatestEnvParams {
-	pathWithNamespace: string;
-	environment: string;
-}
+export type IGetLatestEnvParams = IEnvQuery;
 
 export interface IGetEnvByVersionParams {
 	idOrVersion: string;
@@ -71,22 +85,21 @@ export interface IUpdateEnv {
 	commitMessage: string;
 }
 
-export type PullPushEnvOptionProps = {
-	production?: boolean;
-	develop?: boolean;
-	staging?: boolean;
-	cicd?: boolean;
+export interface PullPushEnvOptionProps extends IEnvironments {
 	force?: boolean;
 	message: string;
-};
+}
 
-export interface IGetLogsParams {
-	pathWithNamespace: string;
-	environment: string;
+export interface IGetLogsParams extends IEnvQuery {
 	take: number;
 	page: number;
 }
 
-export interface IGetLogsOptionProps {
+export interface IGetLogsOptionProps extends IEnvironments {
 	oneline: boolean;
+}
+
+export interface IGetForwardVersions {
+	version: string;
+	environment: string;
 }

@@ -186,3 +186,11 @@ export const generateEncryptionKey = () => {
 
 	return key.toString('hex');
 };
+
+export const getHashValue = (fileContent: string) => {
+	const hashSum = crypto.createHash('sha256');
+
+	hashSum.update(fileContent);
+
+	return hashSum.digest('hex');
+};

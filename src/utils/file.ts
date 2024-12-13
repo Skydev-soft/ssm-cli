@@ -1,7 +1,6 @@
 import {
 	ACCESS_TOKEN_KEY,
-	ENV_VAULT,
-	ENV_VERSION,
+	CONFIG_FILES,
 	WORKING_DIR_KEY,
 } from '@/constants/common';
 import authApi from '@/services/apis/auth';
@@ -10,7 +9,7 @@ import {
 	EnvironmentEnum,
 	IUpdateLocalEnvVersion,
 } from '@/types/common';
-import { PullPushEnvOptionProps } from '@/types/env';
+import { IEnvironments } from '@/types/env';
 import * as diff from 'diff';
 import fs from 'fs';
 import path from 'path';
@@ -110,28 +109,33 @@ export const createEnvFile = ({ data, fileName }: CreateEnvFile) => {
 
 export const updateLocalEnvVersion = ({
 	version,
-	fileName = ENV_VERSION ?? '',
+	environment,
+	fileName = CONFIG_FILES.ENV_VERSION ?? '',
 }: IUpdateLocalEnvVersion) => {
+	const environmentVersion = `ENV_${environment.toUpperCase()}_VERSION`;
+
 	try {
 		const content = isExistEnvVersionFile()
 			? fs.readFileSync(fileName, 'utf8')
 			: '';
 		const lines = content.split('\n');
+
+		// Delete empty line at the end of file
 		if (lines[lines.length - 1] === '') lines.pop();
 
 		let hasEnvVersionLine = false;
 
 		const updatedLines = lines.map((line) => {
-			if (line.startsWith('ENV_VERSION=')) {
+			if (line.startsWith(environmentVersion)) {
 				hasEnvVersionLine = true;
-				return `ENV_VERSION=${version}`;
+				return `${environmentVersion}=${version}`;
 			}
 
 			return line;
 		});
 
 		if (!hasEnvVersionLine) {
-			updatedLines.push(`ENV_VERSION=${version}`);
+			updatedLines.push(`${environmentVersion}=${version}`);
 		}
 
 		const updatedContent = updatedLines.join('\n');
@@ -146,16 +150,25 @@ export const updateLocalEnvVersion = ({
 	}
 };
 
-export const getEnvVersion = (fileName = ENV_VERSION ?? '') => {
+export const getEnvVersion = (
+	environment: string,
+	fileName = CONFIG_FILES.ENV_VERSION ?? '',
+) => {
 	const content = fs.readFileSync(fileName, 'utf8');
 	const lines = content.split('\n');
 
 	return (
-		lines.find((line) => line.startsWith('ENV_VERSION='))?.split('=')?.[1] ?? ''
+		lines
+			.find((line) =>
+				line.startsWith(`ENV_${environment.toUpperCase()}_VERSION=`),
+			)
+			?.split('=')?.[1] ?? ''
 	);
 };
 
-export const isExistEnvVersionFile = (fileName = ENV_VERSION ?? '') => {
+export const isExistEnvVersionFile = (
+	fileName = CONFIG_FILES.ENV_VERSION ?? '',
+) => {
 	return fs.existsSync(fileName);
 };
 
@@ -187,7 +200,9 @@ export const getEnvFromFile = (filePath = '.env'): string => {
 	}
 };
 
-export const getRepoInfoFromFile = (filePath = ENV_VAULT ?? '') => {
+export const getRepoInfoFromFile = (
+	filePath = CONFIG_FILES.ENV_VAULT ?? '',
+) => {
 	try {
 		const content = fs.readFileSync(filePath, 'utf8');
 
@@ -262,7 +277,7 @@ export const getEnvInfoFromOptions = ({
 	develop,
 	cicd,
 	staging,
-}: Omit<PullPushEnvOptionProps, 'message'>) => {
+}: IEnvironments) => {
 	if (production)
 		return {
 			environment: EnvironmentEnum.PRODUCTION,
