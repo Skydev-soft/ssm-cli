@@ -154,6 +154,13 @@ Revert to any previous version of environment variables
 ssm-cli revert <version>
 ```
 
+`auto-complete`
+Append some config to your terminal for auto complete (using tab)
+
+```sh
+ssm-cli auto-complete
+```
+
 ## Contributors
 
 <p>
