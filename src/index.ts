@@ -14,6 +14,7 @@ import { renderTitle } from '@/utils/renderTitle.js';
 import { Command } from 'commander';
 import { config } from 'dotenv';
 import { getConfig } from './commands/config/get-config';
+import { autoComplete } from './commands/config/setup';
 import { setupConfig } from './commands/config/setup-config';
 
 config();
@@ -97,6 +98,13 @@ config();
 		.command('head')
 		.description('Get the current version of ENV')
 		.action(getCurrentVersion);
+
+	program
+		.command('auto-complete')
+		.description('Set up tab completion for your shell')
+		.action(() => {
+			autoComplete(program);
+		});
 
 	program.parse(process.argv);
 })();
