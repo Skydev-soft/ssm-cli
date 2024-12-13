@@ -2,17 +2,17 @@ import { GENERATE_PRIVATE_KEY_URL } from '@/constants/common';
 import { getAppDataPath } from '@/utils/os';
 import fs from 'fs';
 import path from 'path';
+import { isExistFile } from './file';
 import { logger } from './logger';
 
-export const loadUserConfig = () => {
-	if (!fs.existsSync(path.join(getAppDataPath(), 'config.json'))) {
+export const loadUserConfig = (configFile = 'config.json') => {
+	const filePath = path.join(getAppDataPath(), configFile);
+
+	if (!isExistFile(filePath)) {
 		return {};
 	}
 
-	const data = fs.readFileSync(
-		path.join(getAppDataPath(), 'config.json'),
-		'utf8',
-	);
+	const data = fs.readFileSync(path.join(getAppDataPath(), configFile), 'utf8');
 
 	return JSON.parse(data.length === 0 || data === '\n' ? '{}' : data);
 };

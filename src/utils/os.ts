@@ -1,13 +1,15 @@
-import { APP_NAME, PAT_FILENAME } from '@/constants/common';
+import { APP_NAME, CONFIG_FILES } from '@/constants/common';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
+import { getEncryptionKeyConfig } from './config';
 import {
 	decryptDataWithAES,
 	decryptKeyManual,
 	encryptDataWithAES,
 	encryptKeyManual,
 } from './encrypt-decrypt';
+import { handleChangeTrackingValue } from './tracking-file';
 
 export const getAppDataPath = () => {
 	const homeDir = os.homedir();
@@ -33,7 +35,7 @@ export const ensureDirectoryExistence = (filePath: string) => {
 
 export const saveToken = async (token: string) => {
 	const appDataPath = getAppDataPath();
-	const tokenFilePath = path.join(appDataPath, PAT_FILENAME ?? '');
+	const tokenFilePath = path.join(appDataPath, CONFIG_FILES.PAT ?? '');
 
 	ensureDirectoryExistence(tokenFilePath);
 
@@ -43,12 +45,16 @@ export const saveToken = async (token: string) => {
 	fs.writeFileSync(tokenFilePath, JSON.stringify(encryptedFileContent), {
 		mode: 0o600,
 	});
+
+	// When login is successful, the private key is stored in the tracking file
+	const privateKey = getEncryptionKeyConfig();
+	handleChangeTrackingValue('privateKey', privateKey, false);
 };
 
 export const loadToken = async () => {
 	const appDataPath = getAppDataPath();
 
-	const tokenFilePath = path.join(appDataPath, PAT_FILENAME ?? '');
+	const tokenFilePath = path.join(appDataPath, CONFIG_FILES.PAT ?? '');
 
 	if (!fs.existsSync(tokenFilePath)) {
 		return null;

@@ -26,8 +26,10 @@ export const updateEnvFileWhenPulling = async (
 	const { force } = props;
 
 	if (force || !isExistFile(fileName)) {
+		// if pull force, it will overwrite the local .env file with the remote .env file
 		fs.writeFileSync(fileName, remoteEnv, 'utf-8');
 	} else {
+		// pull and merge with the local .env file. If there is a conflict, it will show a warning message.
 		const localEnv = readEnvFile(fileName).join('\n');
 
 		const { mergedContent, hasConflicts } = mergeEnvContents(
@@ -47,7 +49,6 @@ export const updateEnvFileWhenPulling = async (
 
 const pullEnv = async (props: PullPushEnvOptionProps) => {
 	try {
-		const { force } = props;
 		const { environment, fileName } = getEnvInfoFromOptions(props);
 		const repoInfo = getRepoInfoFromFile();
 
@@ -58,8 +59,8 @@ const pullEnv = async (props: PullPushEnvOptionProps) => {
 			pathWithNamespace: repoInfo[REPO_NAME_KEY],
 		});
 
-		if (isExistEnvVersionFile()) {
-			const currentEnvVersion = getEnvVersion();
+		if (isExistEnvVersionFile() && isExistFile(fileName)) {
+			const currentEnvVersion = getEnvVersion(environment);
 
 			if (currentEnvVersion === version) {
 				logger.log('Already up to date.');
@@ -70,14 +71,15 @@ const pullEnv = async (props: PullPushEnvOptionProps) => {
 		if (decryptedData) {
 			updateEnvFileWhenPulling(decryptedData, getEnvFilePath(fileName), props);
 
-			updateLocalEnvVersion({ version });
+			updateLocalEnvVersion({ version, environment });
 
 			logger.info(
-				`.env file updated successfully${force ? ' with force' : ''}.`,
+				`.env file updated successfully${props?.force ? ' with force' : ''}.`,
 			);
 		}
 	} catch (error) {
 		const errorData = error as IMessage;
+
 		logger.error(errorData.message);
 	}
 };

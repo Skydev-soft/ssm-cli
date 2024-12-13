@@ -9,6 +9,10 @@ import {
 } from '@/utils';
 import { getEnvFilePath } from '@/utils/file';
 import { logger } from '@/utils/logger';
+import {
+	handleChangeTrackingValue,
+	isChangeValue,
+} from '@/utils/tracking-file';
 
 const pushEnv = async (props: PullPushEnvOptionProps) => {
 	const { message: commitMessage } = props;
@@ -23,14 +27,22 @@ const pushEnv = async (props: PullPushEnvOptionProps) => {
 
 		if (!env) return;
 
-		await envApi.createEnv({
-			environment,
-			repositoryId: repoInfo[REPO_ID_KEY],
-			env,
-			commitMessage,
-		});
+		const isChangeEnv = isChangeValue(environment, env, true);
 
-		logger.info(`Push env ${environment} successfully`);
+		if (isChangeEnv) {
+			await envApi.createEnv({
+				environment,
+				repositoryId: repoInfo[REPO_ID_KEY],
+				env,
+				commitMessage,
+			});
+
+			handleChangeTrackingValue(environment, env, true);
+
+			logger.info(`Push env ${environment.toLowerCase()} successfully`);
+		} else {
+			logger.warn(`Env ${environment.toLowerCase()} is not changed`);
+		}
 	} catch (error) {
 		const errorData = error as IMessage;
 		logger.error(errorData.message);
