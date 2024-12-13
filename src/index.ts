@@ -14,6 +14,7 @@ import { renderTitle } from '@/utils/renderTitle.js';
 import { Command } from 'commander';
 import { config } from 'dotenv';
 import { getConfig } from './commands/config/get-config';
+import { autoComplete } from './commands/config/setup';
 import { setupConfig } from './commands/config/setup-config';
 import { AuthMiddleware } from './middlewares';
 
@@ -110,6 +111,13 @@ config();
 		.option('-c, --cicd', 'Head env ci cd')
 		.description('Get the current version of ENV')
 		.action(AuthMiddleware(getCurrentVersion));
+
+	program
+		.command('auto-complete')
+		.description('Set up tab completion for your shell')
+		.action(() => {
+			autoComplete(program);
+		});
 
 	program.parse(process.argv);
 })();
